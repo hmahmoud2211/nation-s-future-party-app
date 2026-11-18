@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "mw-app",
-    "slug": "mw-app",
+    "name": "مستقبل وطن | قطاع الأعمال",
+    "slug": "mostaqbal-watan-business",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,7 +11,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#061B49",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
@@ -19,7 +19,34 @@
       "predictiveBackGestureEnabled": false
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro",
+      "output": "single"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-status-bar",
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#061B49",
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 160
+        }
+      ],
+      "expo-image",
+      [
+        "expo-localization",
+        {
+          "supportsRTL": true,
+          "forcesRTL": true
+        }
+      ]
+    ],
+    "scheme": "mwbusiness",
+    "experiments": {
+      "typedRoutes": false
     }
   }
 }

@@ -1,0 +1,111 @@
+import type { Committee } from '@/types';
+import { daysAgo } from '@/utils/dates';
+
+/**
+ * The 10 committees (activities) of أمانة قطاع الأعمال المركزية, in the order of the official chart.
+ * Descriptions are the "main tasks" (المهام الرئيسية) from that chart.
+ * Officials and supervisors are derived from members — see mockMembers.ts.
+ * Admins can enable/disable entries at runtime.
+ */
+export const mockCommittees: Committee[] = [
+  {
+    id: 'c-investment',
+    name: 'لجنة الاستثمار',
+    shortName: 'الاستثمار',
+    description: 'تحفيز الاستثمار المحلي والأجنبي ووضع المبادرات الاستثمارية.',
+    icon: 'investment',
+    color: '#0B2B68',
+    enabled: true,
+    createdAt: daysAgo(720),
+  },
+  {
+    id: 'c-industry',
+    name: 'لجنة الصناعة',
+    shortName: 'الصناعة',
+    description: 'دعم القطاع الصناعي وتطويره ومعالجة التحديات.',
+    icon: 'industry',
+    color: '#5B4A2E',
+    enabled: true,
+    createdAt: daysAgo(700),
+  },
+  {
+    id: 'c-realestate',
+    name: 'لجنة التطوير العقاري',
+    shortName: 'التطوير العقاري',
+    description: 'دعم التطوير العقاري والمدن الجديدة وتوفير الحلول التشريعية.',
+    icon: 'realestate',
+    color: '#2E6B5B',
+    enabled: true,
+    createdAt: daysAgo(690),
+  },
+  {
+    id: 'c-entre',
+    name: 'لجنة ريادة الأعمال والابتكار',
+    shortName: 'ريادة الأعمال',
+    description: 'دعم الشركات الناشئة والابتكار ونشر ثقافة ريادة الأعمال.',
+    icon: 'entrepreneurship',
+    color: '#B5782A',
+    enabled: true,
+    createdAt: daysAgo(650),
+  },
+  {
+    id: 'c-trade',
+    name: 'لجنة التجارة الداخلية والخارجية',
+    shortName: 'التجارة',
+    description: 'دعم حركة التجارة الداخلية والخارجية وتسهيل الإجراءات.',
+    icon: 'trade',
+    color: '#1F5A8A',
+    enabled: true,
+    createdAt: daysAgo(640),
+  },
+  {
+    id: 'c-tourism',
+    name: 'لجنة السياحة والضيافة',
+    shortName: 'السياحة',
+    description: 'تعزيز السياحة ودعم قطاع الضيافة وتطوير الخدمات.',
+    icon: 'tourism',
+    color: '#2A7F9E',
+    enabled: true,
+    createdAt: daysAgo(600),
+  },
+  {
+    id: 'c-tech',
+    name: 'لجنة التكنولوجيا والتحول الرقمي',
+    shortName: 'التكنولوجيا',
+    description: 'دعم التحول الرقمي وتبني التكنولوجيا الحديثة.',
+    icon: 'technology',
+    color: '#3D4FB0',
+    enabled: true,
+    createdAt: daysAgo(710),
+  },
+  {
+    id: 'c-social',
+    name: 'لجنة المسؤولية المجتمعية',
+    shortName: 'المسؤولية المجتمعية',
+    description: 'تعزيز دور القطاع الخاص في خدمة المجتمع والمبادرات المجتمعية.',
+    icon: 'social',
+    color: '#9E3D5A',
+    enabled: true,
+    createdAt: daysAgo(540),
+  },
+  {
+    id: 'c-studies',
+    name: 'لجنة الدراسات والسياسات الاقتصادية',
+    shortName: 'الدراسات',
+    description: 'إعداد الدراسات والبحوث الاقتصادية وصياغة السياسات والمقترحات.',
+    icon: 'studies',
+    color: '#4A4A6A',
+    enabled: true,
+    createdAt: daysAgo(520),
+  },
+  {
+    id: 'c-markets',
+    name: 'لجنة الأسواق المالية',
+    shortName: 'الأسواق المالية',
+    description: 'دعم وتطوير الأسواق المالية وتعزيز دورها في الاقتصاد.',
+    icon: 'markets',
+    color: '#7A5C1F',
+    enabled: true,
+    createdAt: daysAgo(500),
+  },
+];
