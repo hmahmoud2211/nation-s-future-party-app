@@ -28,7 +28,7 @@ export function createStyles(theme: AppTheme) {
       alignItems: 'center',
       gap: spacing.md,
       padding: spacing.md,
-      backgroundColor: colors.white,
+      backgroundColor: colors.frostStrong,
       borderRadius: borderRadius.md,
       borderWidth: borderWidth.hairline,
       borderColor: colors.border,

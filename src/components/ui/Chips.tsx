@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   chipActive: { backgroundColor: colors.primary, borderColor: colors.primary },
-  chipIdle: { backgroundColor: colors.card, borderColor: colors.border },
+  chipIdle: { backgroundColor: colors.frostStrong, borderColor: colors.rimSoft },
   count: { minWidth: 20, paddingHorizontal: spacing.xs5, borderRadius: borderRadius.pill, alignItems: 'center' },
   countText: { ...typography.chipCount },
   segment: {

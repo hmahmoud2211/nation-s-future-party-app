@@ -21,7 +21,7 @@ export function createStyles(theme: AppTheme) {
       gap: spacing.md,
       padding: spacing.md,
       borderRadius: borderRadius.md,
-      backgroundColor: colors.white,
+      backgroundColor: colors.frostStrong,
       borderWidth: borderWidth.card,
       borderColor: colors.border,
     },

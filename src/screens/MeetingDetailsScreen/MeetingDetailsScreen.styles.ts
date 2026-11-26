@@ -48,7 +48,7 @@ export function createStyles(theme: AppTheme) {
     agendaRow: { flexDirection: 'row', alignItems: 'flex-start', gap: spacing.sm },
     num: { width: AGENDA_NUMBER_SIZE, height: AGENDA_NUMBER_SIZE, borderRadius: borderRadius.sm12, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center', marginTop: spacing.xxs },
     counts: { flexDirection: 'row', gap: spacing.sm, marginBottom: spacing.sm, flexWrap: 'wrap' },
-    pill: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs5, backgroundColor: colors.white, borderRadius: borderRadius.pill, borderWidth: borderWidth.hairline, borderColor: colors.border, paddingHorizontal: spacing.md, paddingVertical: spacing.xxs3 },
+    pill: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs5, backgroundColor: colors.frostStrong, borderRadius: borderRadius.pill, borderWidth: borderWidth.hairline, borderColor: colors.border, paddingHorizontal: spacing.md, paddingVertical: spacing.xxs3 },
     dot: { width: COUNT_DOT_SIZE, height: COUNT_DOT_SIZE, borderRadius: borderRadius.tiny },
     attendee: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, paddingHorizontal: spacing.md, paddingVertical: spacing.sm10 },
     border: { borderBottomWidth: borderWidth.hairline, borderBottomColor: colors.border },

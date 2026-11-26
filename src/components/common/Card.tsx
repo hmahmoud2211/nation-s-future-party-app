@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 import { borderRadius, borderWidth, colors, layout, shadows, spacing } from '@/theme';
+import { GlassSheen } from '@/components/common/GlassBackdrop';
 import { PressableScale } from '@/components/common/PressableScale';
 
 export type CardVariant = 'outlined' | 'soft' | 'solid';
@@ -11,8 +12,8 @@ export interface CardProps {
   style?: StyleProp<ViewStyle>;
   padded?: boolean;
   /**
-   * - `outlined` (default): translucent white with the design's navy outline.
-   * - `soft`: translucent white with a light border (dense nested content).
+   * - `outlined` (default): frosted glass pane with a bright rim and top sheen.
+   * - `soft`: brighter, lighter-rimmed glass (dense nested content).
    * - `solid`: opaque white (on top of imagery / overlays).
    */
   variant?: CardVariant;
@@ -29,11 +30,14 @@ export interface CardProps {
 
 const VARIANTS: Record<CardVariant, ViewStyle> = {
   outlined: { backgroundColor: colors.card, borderColor: colors.cardBorder },
-  soft: { backgroundColor: colors.card, borderColor: colors.border },
+  soft: { backgroundColor: colors.frostStrong, borderColor: colors.rimSoft },
   solid: { backgroundColor: colors.cardSolid, borderColor: colors.border },
 };
 
-/** Card — the base surface of the design system. */
+/**
+ * Card — the base surface of the design system: a glass pane. It sits on the static page backdrop, so a frosted
+ * translucent fill reads as blur without a live blur view (cheap in long lists).
+ */
 export function Card({
   children,
   onPress,
@@ -51,6 +55,7 @@ export function Card({
   const inset = padded ? layout.cardPadding : spacing.md;
   const content = (
     <>
+      {variant === 'solid' ? null : <GlassSheen />}
       {accentColor ? <View style={[styles.accent, accentPosition === 'end' ? styles.accentEnd : styles.accentStart, { width: accentWidth, backgroundColor: accentColor }]} /> : null}
       {children}
     </>

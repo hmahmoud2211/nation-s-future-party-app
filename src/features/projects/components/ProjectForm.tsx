@@ -301,7 +301,7 @@ export function ProjectForm({ mode, project, defaultCommitteeId }: ProjectFormPr
 
 const styles = StyleSheet.create({
   row: { flexDirection: 'row', gap: spacing.sm },
-  milestone: { gap: spacing.sm, backgroundColor: colors.white, borderRadius: borderRadius.lg, borderWidth: 1, borderColor: colors.border, padding: spacing.md },
+  milestone: { gap: spacing.sm, backgroundColor: colors.frostStrong, borderRadius: borderRadius.lg, borderWidth: 1, borderColor: colors.border, padding: spacing.md },
   msHead: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
   msNum: { width: 24, height: 24, borderRadius: 12, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center' },
 });

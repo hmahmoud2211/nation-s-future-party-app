@@ -98,9 +98,9 @@ export function CommentInput({ onSend, placeholder = 'اكتب ردك هنا…'
 
 const styles = StyleSheet.create({
   bar: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.frost,
     borderTopWidth: 1,
-    borderTopColor: colors.border,
+    borderTopColor: colors.rim,
     paddingHorizontal: GUTTER,
     paddingTop: spacing.sm + 2,
   },
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     minHeight: 44,
     maxHeight: 120,
     borderRadius: borderRadius.lg,
-    backgroundColor: colors.background,
+    backgroundColor: colors.frostStrong,
     borderWidth: 1,
     borderColor: colors.border,
     paddingHorizontal: spacing.md,

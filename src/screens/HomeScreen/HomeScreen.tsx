@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useRouter } from 'expo-router';
-import Animated, { FadeInDown } from 'react-native-reanimated';
+import Animated, { FadeInDown, useSharedValue } from 'react-native-reanimated';
 import { BrandHeader } from '@/components/layout/BrandHeader';
 import { ScreenContainer } from '@/components/layout/ScreenContainer';
 import { sampleWeather } from '@/data';
@@ -25,7 +25,7 @@ function Reveal({ index, children }: { index: number; children: React.ReactNode 
 }
 
 /**
- * Home page — both Figma references as one continuous scroll under a fixed brand header:
+ * Home page — both Figma references as one continuous scroll under a brand header that collapses to a slim bar:
  * party performance (meetings) → initiatives → implemented chart → quick actions →
  * governorates → top news. All figures are live and scoped to the user's permissions.
  */
@@ -36,12 +36,16 @@ export function HomeScreen() {
   const unread = useUnreadCount();
   const { wideGutter } = useScreenLayout();
   const data = useHomeData();
+  // Drives the brand header's collapse as the page scrolls.
+  const scrollY = useSharedValue(0);
 
   return (
     <ScreenContainer
       gutter={wideGutter}
       contentStyle={styles.content}
-      header={<BrandHeader unread={unread} onNotifications={() => router.push('/notifications')} weather={sampleWeather} />}
+      scrollY={scrollY}
+      floatingHeader
+      header={<BrandHeader unread={unread} onNotifications={() => router.push('/notifications')} weather={sampleWeather} scrollY={scrollY} />}
     >
       <Reveal index={0}>
         <PartyPerformanceSection previous={data.meetings.previous} next={data.meetings.next} />

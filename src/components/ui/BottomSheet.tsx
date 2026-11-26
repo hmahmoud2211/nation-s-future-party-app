@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { X } from 'lucide-react-native';
 import { borderRadius, colors, GUTTER, motion, RTL_ROOT, spacing } from '@/theme';
 import { AppText } from '@/components/common/AppText';
+import { GlassBackdrop } from '@/components/common/GlassBackdrop';
 import { IconButton } from '@/components/common/IconButton';
 
 export interface BottomSheetProps {
@@ -20,7 +21,8 @@ export interface BottomSheetProps {
 }
 
 /**
- * Modal bottom sheet. Modal content is a new native root, so RTL direction is re-applied here.
+ * Modal bottom sheet on frosted glass (live blur of the screen behind it). Modal content is a new native root,
+ * so RTL direction is re-applied here.
  */
 export function BottomSheet({ visible, onClose, title, subtitle, children, footer, scroll = true, maxHeightPercent = 88 }: BottomSheetProps) {
   const insets = useSafeAreaInsets();
@@ -35,6 +37,7 @@ export function BottomSheet({ visible, onClose, title, subtitle, children, foote
             entering={SlideInDown.duration(motion.duration.sheet)}
             style={[styles.sheet, { maxHeight: `${maxHeightPercent}%`, paddingBottom: footer ? 0 : Math.max(insets.bottom, spacing.lg) }]}
           >
+            <GlassBackdrop material="sheet" />
             <View style={styles.handle} />
             {title ? (
               <View style={styles.header}>
@@ -69,7 +72,9 @@ const styles = StyleSheet.create({
   backdrop: { backgroundColor: colors.overlay },
   kav: { width: '100%', justifyContent: 'flex-end', flex: 1 },
   sheet: {
-    backgroundColor: colors.background,
+    borderWidth: 1,
+    borderBottomWidth: 0,
+    borderColor: colors.rim,
     borderTopStartRadius: borderRadius.xxl,
     borderTopEndRadius: borderRadius.xxl,
     overflow: 'hidden',
@@ -80,7 +85,7 @@ const styles = StyleSheet.create({
   handle: { width: 44, height: 5, borderRadius: borderRadius.pill, backgroundColor: colors.borderStrong, alignSelf: 'center', marginTop: spacing.sm, marginBottom: spacing.xs },
   header: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, paddingHorizontal: GUTTER, paddingVertical: spacing.md },
   content: { paddingHorizontal: GUTTER, paddingBottom: spacing.lg },
-  footer: { paddingHorizontal: GUTTER, paddingTop: spacing.md, borderTopWidth: 1, borderTopColor: colors.border, backgroundColor: colors.white },
+  footer: { paddingHorizontal: GUTTER, paddingTop: spacing.md, borderTopWidth: 1, borderTopColor: colors.border, backgroundColor: colors.frostSubtle },
 });
 
 export default BottomSheet;

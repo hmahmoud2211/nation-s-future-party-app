@@ -12,6 +12,7 @@ import { motion } from '@/theme/motion';
 import { shadows } from '@/theme/shadows';
 import { spacing } from '@/theme/spacing';
 import { fontFamily, latinFonts, typography } from '@/theme/typography';
+import { backdrop, glassMaterials } from '@/theme/glass';
 
 export { borderRadius, borderWidth } from '@/theme/borderRadius';
 export { breakpoints } from '@/theme/breakpoints';
@@ -21,6 +22,7 @@ export { motion } from '@/theme/motion';
 export { shadows } from '@/theme/shadows';
 export { spacing, type SpacingKey } from '@/theme/spacing';
 export { fontFamily, latinFonts, MAX_FONT_SCALE, NUMERAL_STYLE, typography, type TypographyVariant } from '@/theme/typography';
+export { backdrop, glassMaterials, SHEEN_DEPTH, type GlassMaterial } from '@/theme/glass';
 
 /** The whole design system as one object — provided by ThemeContext, returned by useAppTheme(). */
 export const appTheme = {
@@ -44,4 +46,6 @@ export const appTheme = {
   opacity,
   breakpoints,
   motion,
+  glassMaterials,
+  backdrop,
 } as const;

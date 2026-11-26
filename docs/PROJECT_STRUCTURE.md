@@ -21,7 +21,7 @@ Every file has one obvious home; the rules below say where new code goes and who
     │   ├── components/      UI only this domain uses (cards, forms)
     │   └── types.ts         the domain's models, inputs and slice interface
     ├── components/          UI any screen may use — NO business logic, data comes through props
-    │   ├── common/          primitives: AppText, Button, IconButton, Card (the one base surface), Badge, Avatar, IconTile, BrandMark …
+    │   ├── common/          primitives: AppText, Button, IconButton, Card (the one base surface), GlassBackdrop, Badge, Avatar, IconTile, BrandMark …
     │   ├── ui/              composed pieces: SectionHeader, Chips, StatCard, Charts, ProgressRing, TrendChart, Timeline, MessageThread, BottomSheet …
     │   ├── layout/          ScreenContainer, AppHeader, BrandHeader, ActionBar, AppBackground, TabBarInset
     │   ├── feedback/        States (Empty / Error / Loading), ToastHost, DialogHost, InlineNote
@@ -30,8 +30,8 @@ Every file has one obvious home; the rules below say where new code goes and who
     ├── config/              settings (brand.ts)
     ├── constants/           images.ts — the image table (one require() per bundled image)
     ├── context/             app-wide state: appStore.ts (composed store), uiStore.ts (toasts / dialogs), ThemeContext.tsx
-    ├── hooks/               app-wide UI hooks: useAppTheme, useScreenLayout, useOverlays, useNow
-    ├── theme/               every design token: colors, typography, spacing, borderRadius, shadows, layout, breakpoints, motion
+    ├── hooks/               app-wide UI hooks: useAppTheme, useScreenLayout, useOverlays, useNow, useReduceTransparency
+    ├── theme/               every design token: colors, glass, typography, spacing, borderRadius, shadows, layout, breakpoints, motion
     ├── types/               app-wide types: common.types.ts, store.types.ts, theme.types.ts
     ├── utils/               small pure helpers: format, dates, id, result, collections, timeline
     └── data/                in-memory mock data (the demo has no backend)
@@ -100,7 +100,13 @@ There is no backend yet. When one is added: one fetch core in `src/lib/http/`, t
 - Text: always `<AppText variant="…">`. Arabic is set in Noto Sans Arabic; numbers and Latin runs are switched to Poppins automatically.
   `NUMERAL_STYLE` in `theme/typography.ts` switches Western ↔ Arabic-Indic digits app-wide.
 - Responsive: phone layouts follow the 430pt design; size from `useScreenLayout()` (breakpoints in `theme/breakpoints.ts`), never from `Dimensions`.
-- The navy-outlined translucent card is `components/common/Card.tsx` — build on it, never re-create it.
+- Surfaces are Apple-style glass over the coloured page backdrop (`AppBackground`, orbs in `theme/glass.ts`):
+  - Panes on the static backdrop — cards, fields, chips, inner panels — use the frosted fills `colors.frost` /
+    `frostStrong` with a `colors.rim` edge and the top sheen. The glass card is `components/common/Card.tsx` — build on it, never re-create it.
+  - Floating chrome that content scrolls under — tab bar, sheets, dialogs, toasts, action bars — puts
+    `<GlassBackdrop material="chrome | sheet | dark" />` first inside an `overflow: 'hidden'` container: live blur on iOS / web,
+    Apple's Liquid Glass on iOS 26 (`liquid`), a near-opaque pane on Android and when Reduce Transparency is on.
+  - Hairlines are translucent navy (`colors.border` / `divider`), so they read on any glass tint.
 
 ## Worked example — adding a "polls" feature
 

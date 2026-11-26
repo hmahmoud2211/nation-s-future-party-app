@@ -6,6 +6,7 @@ import { useDialogState, type OpenDialog } from '@/hooks/useOverlays';
 import { borderRadius, colors, MAX_FONT_SCALE, motion, RTL_ROOT, shadows, spacing, typography } from '@/theme';
 import { AppText } from '@/components/common/AppText';
 import { Button } from '@/components/common/Button';
+import { GlassBackdrop } from '@/components/common/GlassBackdrop';
 
 type Dialog = OpenDialog;
 
@@ -61,6 +62,7 @@ function DialogCard({ dialog }: { dialog: Dialog }) {
           <Animated.View entering={FadeIn.duration(motion.duration.fast)} style={[StyleSheet.absoluteFill, { backgroundColor: colors.overlay }]} />
         </Pressable>
         <Animated.View entering={ZoomIn.duration(motion.duration.short)} style={styles.card} accessibilityViewIsModal>
+          <GlassBackdrop material="sheet" />
           <View style={[styles.icon, { backgroundColor: iconBg }]}>
             <Icon size={26} color={iconColor} />
           </View>
@@ -116,8 +118,10 @@ const styles = StyleSheet.create({
   card: {
     width: '100%',
     maxWidth: 420,
-    backgroundColor: colors.white,
     borderRadius: borderRadius.xl,
+    borderWidth: 1,
+    borderColor: colors.rim,
+    overflow: 'hidden',
     padding: spacing.xxl,
     alignItems: 'center',
     ...shadows.overlay,
@@ -135,7 +139,7 @@ const styles = StyleSheet.create({
     color: colors.text,
     textAlign: 'right',
     writingDirection: 'rtl',
-    backgroundColor: colors.background,
+    backgroundColor: colors.frostStrong,
   },
   buttons: { flexDirection: 'row', gap: spacing.sm, marginTop: spacing.xl, alignSelf: 'stretch' },
 });
