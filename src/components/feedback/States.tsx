@@ -106,6 +106,6 @@ const styles = StyleSheet.create({
   },
   emptyIconCompact: { width: 52, height: 52, borderRadius: borderRadius.pill },
   emptyMsg: { marginTop: spacing.xs, maxWidth: 320 },
-  skeletonCard: { backgroundColor: colors.card, borderRadius: borderRadius.xl, padding: spacing.lg, borderWidth: 1, borderColor: colors.border },
+  skeletonCard: { backgroundColor: colors.card, borderRadius: borderRadius.xl, padding: spacing.lg, borderWidth: 1, borderColor: colors.rim },
   skeletonRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
 });

@@ -29,7 +29,7 @@ export function createStyles(theme: AppTheme) {
       borderRadius: borderRadius.pill,
       borderWidth: borderWidth.hairline,
       borderColor: colors.border,
-      backgroundColor: colors.white,
+      backgroundColor: colors.frostStrong,
       alignItems: 'center',
       justifyContent: 'center',
     },

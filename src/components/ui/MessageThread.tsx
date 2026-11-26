@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   bubbleWrap: { maxWidth: '82%', gap: spacing.xxs3 },
   bubble: { paddingHorizontal: spacing.md, paddingVertical: spacing.sm + 2, borderRadius: borderRadius.lg },
   mine: { backgroundColor: colors.primary, borderTopEndRadius: 4 },
-  other: { backgroundColor: colors.white, borderWidth: 1, borderColor: colors.border, borderTopStartRadius: 4 },
+  other: { backgroundColor: colors.frostStrong, borderWidth: 1, borderColor: colors.rim, borderTopStartRadius: 4 },
   info: { borderWidth: 1.5, borderColor: colors.accent },
   review: { backgroundColor: colors.accentSoft, borderColor: colors.accentLight },
   tagRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs, marginBottom: spacing.xxs },

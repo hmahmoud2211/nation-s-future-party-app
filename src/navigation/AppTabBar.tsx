@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import type { BottomTabBarProps } from 'expo-router/tabs';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { AppText } from '@/components/common/AppText';
+import { GlassBackdrop } from '@/components/common/GlassBackdrop';
 import { PressableScale } from '@/components/common/PressableScale';
 import { useMeetings } from '@/features/meetings/hooks/useMeetings';
 import { useProposals } from '@/features/proposals/hooks/useProposals';
 import { useUser } from '@/features/auth/hooks/useSession';
 import { useUnreadCount } from '@/features/notifications/hooks/useNotifications';
-import { borderRadius, colors, fontFamily, gradients, motion, shadows, sizes, spacing, typography } from '@/theme';
+import { borderRadius, colors, fontFamily, motion, shadows, sizes, spacing, typography } from '@/theme';
 import { can, canJoinConference } from '@/features/auth/services/permissions';
 import { TABS } from '@/navigation/navTabs';
 
@@ -32,7 +32,7 @@ function useTabBadges(): Record<string, number> {
 }
 
 /**
- * The selected tab's darker pill. It fills its own tab symmetrically, so it needs no physical
+ * The selected tab's tinted glass pill. It fills its own tab symmetrically, so it needs no physical
  * left/right positioning (native RTL swaps those) and simply fades / grows in on selection.
  */
 function ActivePill({ active }: { active: boolean }) {
@@ -45,9 +45,9 @@ function ActivePill({ active }: { active: boolean }) {
 }
 
 /**
- * Floating pill navigation from the design: slate gradient bar with a darker pill on the
- * selected tab. Rendered over the screen (absolute) — tab screens reserve its height through
- * `useTabBarInset()`.
+ * Floating glass pill navigation: a frosted bar (live blur, or Apple's Liquid Glass on iOS 26) with a tinted pill
+ * and navy glyphs on the selected tab. Rendered over the screen (absolute) so content scrolls under the glass —
+ * tab screens reserve its height through `useTabBarInset()`.
  */
 export function AppTabBar({ state, descriptors, emitter, navigateToTab, insets }: BottomTabBarProps) {
   const badges = useTabBadges();
@@ -56,7 +56,7 @@ export function AppTabBar({ state, descriptors, emitter, navigateToTab, insets }
   return (
     <View pointerEvents="box-none" style={[styles.wrap, { bottom: Math.max(insets.bottom, sizes.tabBar.bottomGap) }]}>
       <View style={styles.bar} accessibilityRole="tablist">
-        <LinearGradient colors={gradients.nav} start={{ x: 0, y: 0.5 }} end={{ x: 1, y: 0.5 }} style={[StyleSheet.absoluteFill, styles.barFill]} />
+        <GlassBackdrop material="chrome" liquid radius={BAR_HEIGHT / 2} />
         {TABS.map((def) => {
           const route = state.routes.find((r) => r.name === def.name);
           if (!route || !descriptors[route.key]) return null;
@@ -80,7 +80,7 @@ export function AppTabBar({ state, descriptors, emitter, navigateToTab, insets }
             >
               <ActivePill active={focused} />
               <View>
-                <Icon size={sizes.icon.md} color={colors.white} strokeWidth={focused ? 2.3 : 1.9} style={focused ? undefined : styles.dim} />
+                <Icon size={sizes.icon.md} color={focused ? colors.primary : colors.textSecondary} strokeWidth={focused ? 2.3 : 1.9} />
                 {badge > 0 ? (
                   <View style={styles.badge}>
                     <AppText variant="meta" color={colors.white} style={styles.badgeText}>
@@ -89,7 +89,7 @@ export function AppTabBar({ state, descriptors, emitter, navigateToTab, insets }
                   </View>
                 ) : null}
               </View>
-              <AppText variant="navLabel" color={colors.white} numberOfLines={1} style={[styles.label, focused ? styles.labelOn : styles.dim]}>
+              <AppText variant="navLabel" color={focused ? colors.primary : colors.textSecondary} numberOfLines={1} style={[styles.label, focused && styles.labelOn]}>
                 {def.label}
               </AppText>
             </PressableScale>
@@ -113,11 +113,10 @@ const styles = StyleSheet.create({
     padding: 4,
     borderRadius: borderRadius.pill,
     borderWidth: 1,
-    borderColor: colors.glassBorder,
-    backgroundColor: colors.secondaryLight,
-    ...shadows.nav,
+    borderColor: colors.rim,
+    overflow: 'hidden',
+    ...shadows.glass,
   },
-  barFill: { borderRadius: borderRadius.pill },
   pill: {
     position: 'absolute',
     top: 0,
@@ -125,12 +124,11 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     borderRadius: borderRadius.pill,
-    backgroundColor: colors.secondaryDark,
+    backgroundColor: colors.primarySoft,
     borderWidth: 1,
-    borderColor: colors.glassBorder,
+    borderColor: colors.rimSoft,
   },
   item: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 1, borderRadius: borderRadius.pill, paddingHorizontal: spacing.xxs },
-  dim: { opacity: 0.72 },
   label: { marginTop: 1 },
   labelOn: { fontFamily: fontFamily.bold },
   badge: {
@@ -145,7 +143,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1.5,
-    borderColor: colors.secondaryLight,
+    borderColor: colors.white,
   },
   badgeText: { ...typography.countBadgeSmall },
 });

@@ -1,6 +1,7 @@
 /**
- * Colour tokens — derived from the «مستقبل وطن» Home Page Figma references: deep navy outlines and
- * headings, slate-indigo surfaces for interactive tiles, blue / teal / violet gradients for data.
+ * Colour tokens — derived from the «مستقبل وطن» Home Page Figma references (deep navy headings, slate-indigo
+ * tiles, blue / teal / violet data gradients), set on Apple-style glass: frosted translucent panes with a bright
+ * rim over a softly coloured backdrop (see `glass.ts`).
  */
 
 // ───────────── Raw palette (do not use directly outside src/theme) ─────────────
@@ -41,7 +42,8 @@ export const colors = {
   primary: palette.navy800,
   primaryDark: palette.navy900,
   primaryLight: palette.navy400,
-  primarySoft: palette.slate100,
+  /** Navy-tinted glass wash — soft buttons, icon wells, the primary tone. */
+  primarySoft: 'rgba(15,25,99,0.07)',
   /** Slate indigo — dropdowns, icon tiles, count pills, navigation. */
   secondary: palette.slate500,
   secondaryDark: palette.slate600,
@@ -58,11 +60,21 @@ export const colors = {
   // Surfaces
   background: '#F3F4F8',
   surface: '#FFFFFF',
-  /** Card background: translucent white so the page gradient shows through, as in the design. */
-  card: 'rgba(255,255,255,0.72)',
+  /** Card background: frosted glass (the backdrop shows through, softened). */
+  card: 'rgba(255,255,255,0.58)',
   cardSolid: '#FFFFFF',
-  /** Neutral tinted surface (disabled inputs, icon wells, chips). */
-  tint: palette.slate50,
+  /** Neutral tinted surface (disabled inputs, icon wells, panels inside cards). */
+  tint: 'rgba(241,243,252,0.72)',
+
+  // Glass — frosted fills and the bright rim of a glass pane
+  /** Cards and panels. */
+  frost: 'rgba(255,255,255,0.58)',
+  /** Fields, chips and panes nested in cards (brighter than the card under them). */
+  frostStrong: 'rgba(255,255,255,0.74)',
+  frostSubtle: 'rgba(255,255,255,0.34)',
+  /** The light edge every glass pane carries. */
+  rim: 'rgba(255,255,255,0.92)',
+  rimSoft: 'rgba(255,255,255,0.6)',
 
   // Text
   text: palette.navy800,
@@ -73,11 +85,12 @@ export const colors = {
   onPrimaryMuted: 'rgba(255,255,255,0.74)',
 
   // Lines
-  /** Card outline — the design outlines every card in deep navy. */
-  cardBorder: palette.navy800,
-  border: palette.gray200,
-  borderStrong: '#C5C8DA',
-  divider: palette.gray100,
+  /** Card outline — the bright rim of the glass pane. */
+  cardBorder: 'rgba(255,255,255,0.92)',
+  /** Hairlines are translucent navy, so they read on any glass tint. */
+  border: 'rgba(15,25,99,0.12)',
+  borderStrong: 'rgba(15,25,99,0.22)',
+  divider: 'rgba(15,25,99,0.07)',
 
   // States
   active: palette.navy800,
@@ -99,7 +112,7 @@ export const colors = {
   infoBorder: '#CFDDF8',
   purple: palette.violet500,
   purpleSoft: '#EEEBFD',
-  neutralSoft: '#ECEDF3',
+  neutralSoft: 'rgba(15,25,99,0.06)',
 
   // Glass (controls and panels on navy surfaces)
   glassFaint: 'rgba(255,255,255,0.07)',
@@ -119,7 +132,8 @@ export const colors = {
 
   white: '#FFFFFF',
   black: '#000000',
-  overlay: 'rgba(11,20,80,0.45)',
+  /** Scrim behind sheets and dialogs — light, so the blurred screen still reads through the glass. */
+  overlay: 'rgba(11,20,80,0.32)',
   /** Full-screen video call background. */
   callBackground: '#0A1240',
 } as const;
@@ -159,18 +173,12 @@ export const gradients = {
   tile: [palette.navy400, '#222D6F'] as Gradient,
   /** Slate tile (icon tiles, pills). */
   slate: ['#6A72A6', palette.slate500] as Gradient,
-  /** Bottom navigation bar (left → right). */
-  nav: ['#5C6FA0', '#6C72A0'] as Gradient,
   /** Chart columns (top → bottom). */
   chartBar: [palette.violet500, palette.sky400] as Gradient,
   /** Rating / progress fill (start → end of the fill). */
   progress: ['#5A2BFF', '#1F7BEA', palette.cyan300] as Gradient,
   /** Section divider (fades out at both ends). */
   divider: ['rgba(90,98,147,0)', 'rgba(90,98,147,0.85)', 'rgba(90,98,147,0)'] as Gradient,
-  /** Page background: white → lavender (diagonal). */
-  page: ['#FFFFFF', '#F1F2F7', '#D9DBE8'] as Gradient,
-  /** Cyan glow rising from the bottom-start corner of the page. */
-  pageGlow: ['rgba(186,238,252,0)', 'rgba(186,238,252,0.95)'] as Gradient,
   /** Progress ring arcs. */
   ringBlue: [palette.blue600, palette.blue300] as Gradient,
   ringNavy: ['#1E3E92', '#5B8BD0'] as Gradient,

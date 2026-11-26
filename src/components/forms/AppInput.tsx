@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.border,
     // Opaque so typed text stays crisp over the gradient page background.
-    backgroundColor: colors.surface,
+    backgroundColor: colors.frostStrong,
   },
   multiline: { alignItems: 'flex-start', minHeight: 112 },
   focused: { borderColor: colors.primary, ...shadows.focus },

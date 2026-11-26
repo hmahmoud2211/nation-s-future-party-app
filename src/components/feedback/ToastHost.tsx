@@ -6,6 +6,7 @@ import { CircleAlert, CircleCheck, Info, TriangleAlert } from 'lucide-react-nati
 import { useToastState } from '@/hooks/useOverlays';
 import { borderRadius, colors, motion, shadows, spacing } from '@/theme';
 import { AppText } from '@/components/common/AppText';
+import { GlassBackdrop } from '@/components/common/GlassBackdrop';
 
 const TONES = {
   success: { icon: CircleCheck, color: colors.success },
@@ -14,7 +15,7 @@ const TONES = {
   warning: { icon: TriangleAlert, color: colors.warning },
 } as const;
 
-/** Global toast (success / error feedback for every action). */
+/** Global toast (success / error feedback for every action) on dark navy glass. */
 export function ToastHost() {
   const { toast, hide } = useToastState();
   const insets = useSafeAreaInsets();
@@ -31,6 +32,7 @@ export function ToastHost() {
   return (
     <View pointerEvents="box-none" style={[styles.wrap, { top: insets.top + spacing.sm }]}>
       <Animated.View key={toast.id} entering={FadeInUp.duration(motion.duration.medium)} exiting={FadeOutUp.duration(motion.duration.quick)} style={styles.toast}>
+        <GlassBackdrop material="dark" />
         <View style={[styles.icon, { backgroundColor: tone.color }]}>
           <Icon size={16} color={colors.white} strokeWidth={2.5} />
         </View>
@@ -48,8 +50,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.md,
-    backgroundColor: colors.primary,
     borderRadius: borderRadius.lg,
+    overflow: 'hidden',
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.md,
     width: '100%',

@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   pendingDot: { backgroundColor: colors.tint, borderColor: colors.borderStrong, borderStyle: 'dashed' },
   line: { flex: 1, width: 2, backgroundColor: colors.border, marginVertical: spacing.xxs },
   body: { flex: 1, paddingBottom: spacing.lg, gap: spacing.xxs },
-  note: { marginTop: spacing.xs, padding: spacing.sm + 2, backgroundColor: colors.background, borderRadius: borderRadius.sm, borderStartWidth: 3 },
+  note: { marginTop: spacing.xs, padding: spacing.sm + 2, backgroundColor: colors.tint, borderRadius: borderRadius.sm, borderStartWidth: 3 },
 });
 
 export default Timeline;
