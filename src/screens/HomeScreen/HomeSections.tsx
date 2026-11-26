@@ -4,6 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import {
   CalendarClock,
+  CalendarDays,
   CalendarPlus,
   CalendarSync,
   ChartColumnIncreasing,
@@ -13,10 +14,13 @@ import {
   Lightbulb,
   MapPin,
   Newspaper,
+  Phone,
+  UserRound,
   type LucideIcon,
 } from 'lucide-react-native';
 import { AppText } from '@/components/common/AppText';
-import { CountPill } from '@/components/common/Badge';
+import { Avatar } from '@/components/common/Avatar';
+import { Badge, CountPill } from '@/components/common/Badge';
 import { Card } from '@/components/common/Card';
 import { CalendarSparkle } from '@/components/common/customIcons';
 import { IconTile } from '@/components/common/IconTile';
@@ -37,10 +41,11 @@ import type { Meeting } from '@/features/meetings/types';
 import { implementationRate, initiativeBreakdown, type InitiativeBreakdown, type MonthlyPoint } from '@/features/proposals/services/initiatives';
 import type { Proposal } from '@/features/proposals/types';
 import { useAppTheme } from '@/hooks/useAppTheme';
+import type { Tone } from '@/theme';
 import { useScreenLayout } from '@/hooks/useScreenLayout';
-import { formatNumber, formatNumericDate, formatPercent, formatRelative, formatWeekday } from '@/utils/format';
+import { formatNumber, formatPercent, formatPhone, formatRelative, formatShortDate, formatTime, formatWeekday } from '@/utils/format';
 import { homeCopy as copy } from './HomeScreen.data';
-import { COMPACT_TILE_SIZE, createStyles, GOVERNORATE_RING_SIZE, MEETING_ACCENT_WIDTH, RATING_BAR_HEIGHT } from './HomeScreen.styles';
+import { COMPACT_TILE_SIZE, CONTACT_AVATAR_SIZE, createStyles, GOVERNORATE_RING_SIZE, MEETING_ACCENT_WIDTH, RATING_BAR_HEIGHT } from './HomeScreen.styles';
 
 function useStyles() {
   const theme = useAppTheme();
@@ -58,17 +63,27 @@ function ringItems(b: InitiativeBreakdown): StatRingItem[] {
 
 // ───────────── أداء الحزب — previous / next meeting ─────────────
 
-function MeetingHighlightCard({ label, icon, meeting, style }: { label: string; icon: LucideIcon; meeting?: Meeting; style?: StyleProp<ViewStyle> }) {
+type MeetingKind = 'previous' | 'next';
+
+/** Relative-time chip on the end of a meeting card ("live now", "in 2 days", "6 days ago"). */
+function meetingStatus(kind: MeetingKind, meeting: Meeting): { label: string; tone: Tone; live: boolean } {
+  if (meeting.status === 'live') return { label: copy.liveNow, tone: 'success', live: true };
+  return { label: formatRelative(meeting.date), tone: kind === 'next' ? 'accent' : 'neutral', live: false };
+}
+
+/** Previous / next meeting: label, title, day · date · time and a relative-time chip. */
+function MeetingHighlightCard({ kind, icon, meeting, style }: { kind: MeetingKind; icon: LucideIcon; meeting?: Meeting; style?: StyleProp<ViewStyle> }) {
   const router = useRouter();
   const { theme, styles } = useStyles();
-  // Below ~390pt the row is tighter than the 430pt design: step the type down so it stays on one line.
   const { isNarrow: compact } = useScreenLayout();
-  const weekday = meeting ? formatWeekday(meeting.date) : '';
-  const date = meeting ? formatNumericDate(meeting.date) : copy.none;
+  const label = kind === 'previous' ? copy.previousMeeting : copy.nextMeeting;
+  const when = meeting ? copy.meetingWhen(formatWeekday(meeting.date), formatShortDate(meeting.date)) : '';
+  const time = meeting ? formatTime(meeting.date) : '';
+  const status = meeting ? meetingStatus(kind, meeting) : null;
   return (
     <Card
       onPress={() => (meeting ? router.push(`/meetings/${meeting.id}`) : router.navigate('/meetings'))}
-      accessibilityLabel={meeting ? copy.meetingA11y(label, weekday, date, meeting.title) : copy.meetingA11yNone(label)}
+      accessibilityLabel={meeting && status ? copy.meetingA11y(label, meeting.title, when, time, status.label) : copy.meetingA11yNone(label)}
       accessibilityHint={meeting ? copy.openMeetingHint : copy.openMeetingsHint}
       accentColor={theme.colors.primaryDark}
       accentPosition="end"
@@ -77,19 +92,33 @@ function MeetingHighlightCard({ label, icon, meeting, style }: { label: string; 
       style={[styles.meetingCard, style]}
     >
       <IconTile icon={icon} size={compact ? COMPACT_TILE_SIZE : undefined} />
-      <AppText variant="subheading" numberOfLines={2} style={[styles.meetingLabel, compact && styles.meetingLabelCompact]}>
-        {copy.labelSuffix(label)}
-      </AppText>
-      <View style={styles.meetingDate}>
-        {weekday ? (
-          <AppText variant="subheading" color={theme.colors.secondaryDark} style={[styles.weekday, compact && styles.weekdayCompact]} numberOfLines={1}>
-            {weekday}
-          </AppText>
-        ) : null}
-        <AppText variant="subheading" color={theme.colors.textSecondary} style={[styles.dateText, compact && styles.dateCompact]} numberOfLines={1}>
-          {date}
+      <View style={styles.meetingBody}>
+        <AppText variant="meta" color={theme.colors.textSecondary} numberOfLines={1}>
+          {label}
         </AppText>
+        {meeting ? (
+          <>
+            <AppText variant="cardTitle" numberOfLines={1}>
+              {meeting.title}
+            </AppText>
+            <View style={styles.meetingMeta}>
+              <CalendarDays size={theme.sizes.icon.xs} color={theme.colors.textSecondary} />
+              <AppText variant="meta" color={theme.colors.textSecondary} numberOfLines={1} style={styles.meetingMetaText}>
+                {when}
+              </AppText>
+              <View style={styles.meetingMetaDot} />
+              <AppText variant="meta" color={theme.colors.textSecondary} numberOfLines={1}>
+                {time}
+              </AppText>
+            </View>
+          </>
+        ) : (
+          <AppText variant="cardTitle" color={theme.colors.textMuted} numberOfLines={1}>
+            {kind === 'previous' ? copy.noPreviousMeeting : copy.noNextMeeting}
+          </AppText>
+        )}
       </View>
+      {status ? <Badge label={status.label} tone={status.tone} dot={status.live} style={styles.meetingStatus} /> : null}
     </Card>
   );
 }
@@ -99,8 +128,8 @@ export function PartyPerformanceSection({ previous, next }: { previous?: Meeting
   return (
     <View>
       <SectionHeader title={copy.performanceTitle} icon={ChartNoAxesCombined} />
-      <MeetingHighlightCard label={copy.previousMeeting} icon={CalendarClock} meeting={previous} />
-      <MeetingHighlightCard label={copy.nextMeeting} icon={CalendarSync} meeting={next} style={styles.meetingGap} />
+      <MeetingHighlightCard kind="previous" icon={CalendarClock} meeting={previous} />
+      <MeetingHighlightCard kind="next" icon={CalendarSync} meeting={next} style={styles.meetingGap} />
     </View>
   );
 }
@@ -127,12 +156,21 @@ export function InitiativesSection({ breakdown }: { breakdown: InitiativeBreakdo
 // ───────────── عدد المبادرات التي تم تنفيذها ─────────────
 
 export function ImplementedChartSection({ data }: { data: MonthlyPoint[] }) {
-  const { styles } = useStyles();
+  const { theme, styles } = useStyles();
+  const total = data.reduce((sum, d) => sum + d.value, 0);
   return (
     <View style={styles.section}>
       <SectionHeader title={copy.implementedTitle} icon={ChartColumnIncreasing} />
       <Card style={styles.chartCard}>
-        <TrendChart data={data} accessibilityLabel={copy.implementedA11y(data)} />
+        <View style={styles.chartHead}>
+          <AppText variant="display" color={theme.colors.primary}>
+            {formatNumber(total)}
+          </AppText>
+          <AppText variant="meta" color={theme.colors.textSecondary} numberOfLines={2} style={styles.chartCaption}>
+            {copy.implementedSummary(data.length)}
+          </AppText>
+        </View>
+        <TrendChart data={data} highlightLast accessibilityLabel={copy.implementedA11y(data)} />
       </Card>
     </View>
   );
@@ -164,16 +202,28 @@ function GradientDivider() {
   return <LinearGradient colors={theme.gradients.divider} start={{ x: 0, y: 0.5 }} end={{ x: 1, y: 0.5 }} style={styles.divider} />;
 }
 
-function LabeledValue({ label, value }: { label: string; value?: string }) {
+/** Governorate secretary: initials avatar, role over name, and the contact number as a pill on the end. */
+function SecretaryRow({ contact }: { contact?: GovernorateContact }) {
   const { theme, styles } = useStyles();
+  const phone = contact ? formatPhone(contact.phone) : '';
   return (
-    <View style={styles.labeled}>
-      <AppText variant="subheading" style={styles.medium} numberOfLines={1}>
-        {copy.labelSuffix(label)}
-      </AppText>
-      <AppText variant="caption" color={theme.colors.textSecondary} numberOfLines={1}>
-        {value || copy.emptyValue}
-      </AppText>
+    <View style={styles.contact} accessible accessibilityLabel={contact ? copy.secretaryA11y(contact.name, phone) : copy.noSecretary}>
+      {contact ? (
+        <Avatar name={contact.name} size={CONTACT_AVATAR_SIZE} color={theme.colors.primary} />
+      ) : (
+        <View style={styles.contactAvatarEmpty}>
+          <UserRound size={theme.sizes.icon.md} color={theme.colors.textMuted} />
+        </View>
+      )}
+      <View style={styles.contactText}>
+        <AppText variant="meta" color={theme.colors.textSecondary} numberOfLines={1}>
+          {copy.governorateSecretary}
+        </AppText>
+        <AppText variant="cardTitle" color={contact ? theme.colors.text : theme.colors.textMuted} numberOfLines={1}>
+          {contact?.name ?? copy.noSecretary}
+        </AppText>
+      </View>
+      {contact ? <Badge label={phone} tone="accent" icon={Phone} size="md" /> : null}
     </View>
   );
 }
@@ -203,22 +253,24 @@ export function GovernorateSection({
       <SectionHeader title={copy.governoratesTitle} icon={MapPin} />
       <Card style={styles.govCard}>
         <FormSelect variant="filled" options={options} value={current.id} onChange={(v) => v && setSelected(v)} title={copy.chooseGovernorate} placeholder={copy.chooseGovernorate} />
-        <View style={styles.govInfo}>
-          <LabeledValue label={copy.governorateSecretary} value={secretary?.name} />
-          <LabeledValue label={copy.contactNumber} value={secretary?.phone} />
-        </View>
+        <SecretaryRow contact={secretary} />
         <GradientDivider />
-        <AppText variant="subheading" style={[styles.medium, styles.govCountTitle]}>
-          {copy.initiativesCount}
-        </AppText>
+        <View style={styles.govCountHead}>
+          <AppText variant="subheading" style={styles.medium} numberOfLines={1}>
+            {copy.initiativesCount}
+          </AppText>
+          <Badge label={copy.initiativesTotal(breakdown.total)} />
+        </View>
         <StatRings items={ringItems(breakdown)} total={breakdown.total} size={GOVERNORATE_RING_SIZE} />
         <View style={styles.rating}>
-          <AppText variant="subheading" style={styles.medium}>
-            {copy.rating}
-          </AppText>
-          <AppText variant="meta" color={theme.colors.text} style={styles.ratingValue}>
-            {formatPercent(rate)}
-          </AppText>
+          <View style={styles.ratingHead}>
+            <AppText variant="bodyMedium" numberOfLines={1}>
+              {copy.rating}
+            </AppText>
+            <AppText variant="subheading" color={theme.colors.primary}>
+              {formatPercent(rate)}
+            </AppText>
+          </View>
           <ProgressBar
             value={rate}
             gradient={theme.gradients.progress}
@@ -226,7 +278,6 @@ export function GovernorateSection({
             trackColor={theme.colors.divider}
             height={RATING_BAR_HEIGHT}
             accessibilityLabel={copy.ratingA11y(current.name, rate)}
-            style={styles.ratingBar}
           />
         </View>
       </Card>

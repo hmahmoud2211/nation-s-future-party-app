@@ -13,8 +13,8 @@ export interface AppTextProps extends TextProps {
   children?: React.ReactNode;
 }
 
-/** A run of Latin letters / digits (with inner punctuation and spaces), e.g. "22/11/2026", "9:36PM", "28°C - Sunny". */
-const LATIN_RUN = /[A-Za-z0-9](?:[A-Za-z0-9°%/:.,+\-–_'· ]*[A-Za-z0-9%°])?/g;
+/** A run of Latin letters / digits (with inner punctuation and spaces), e.g. "22/11/2026", "9:36PM", "28°C - Sunny", "0120 000 0010". */
+const LATIN_RUN = /[A-Za-z0-9](?:[A-Za-z0-9°%/:.,+\-–_'· \u00A0]*[A-Za-z0-9%°])?/g;
 
 /** Wraps Latin runs in a nested Text set in the matching Poppins weight; Arabic stays in the base font. */
 function splitScripts(text: string, latinFamily: string | undefined, key: string): React.ReactNode {

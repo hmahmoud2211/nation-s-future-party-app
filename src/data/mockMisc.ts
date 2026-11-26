@@ -173,4 +173,4 @@ export const mockReports: CommitteeReport[] = rpRows.map(([committeeId, title, p
 // ───────────────────────────── Weather ─────────────────────────────
 
 /** SAMPLE weather for the home header (values from the design). There is no weather API in the demo. */
-export const sampleWeather: WeatherSnapshot = { temperatureC: 28, condition: 'Sunny' };
+export const sampleWeather: WeatherSnapshot = { temperatureC: 28, kind: 'sunny', condition: 'مشمس' };

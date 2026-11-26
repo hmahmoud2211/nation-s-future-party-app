@@ -50,9 +50,13 @@ export interface Comment {
 }
 
 /** Snapshot shown in the home header. The demo has no weather service — see `sampleWeather`. */
+export type WeatherKind = 'sunny' | 'partlyCloudy' | 'cloudy' | 'rain' | 'wind';
+
 export interface WeatherSnapshot {
   temperatureC: number;
-  /** Short condition label, e.g. "Sunny" (as written in the design). */
+  /** Picks the weather icon. */
+  kind: WeatherKind;
+  /** Short Arabic condition label shown under the temperature, e.g. «مشمس». */
   condition: string;
 }
 

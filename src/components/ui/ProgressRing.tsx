@@ -2,7 +2,7 @@ import React, { useId } from 'react';
 import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 import Svg, { Circle, Defs, LinearGradient, Path, RadialGradient, Stop } from 'react-native-svg';
 import { colors, fontFamily, gradients, spacing } from '@/theme';
-import { formatNumber } from '@/utils/format';
+import { formatNumber, formatPercent } from '@/utils/format';
 import { AppText } from '@/components/common/AppText';
 
 export type RingTone = 'blue' | 'navy' | 'teal';
@@ -81,6 +81,8 @@ export const ProgressRing = React.memo(function ProgressRing({ value, progress, 
   );
 });
 
+const SHARE_DOT_SIZE = 6;
+
 export interface StatRingItem {
   key: string;
   label: string;
@@ -99,11 +101,20 @@ export function StatRings({ items, total, size = 70, style }: { items: StatRingI
             progress={total > 0 ? item.value / total : 0}
             tone={item.tone}
             size={size}
-            accessibilityLabel={`${item.label}: ${formatNumber(item.value)} من ${formatNumber(total)}`}
+            accessibilityLabel={`${item.label}: ${formatNumber(item.value)} من ${formatNumber(total)}، ${formatPercent(total > 0 ? (item.value / total) * 100 : 0)}`}
           />
-          <AppText variant="subheading" align="center" numberOfLines={1} style={styles.label} importantForAccessibility="no">
-            {item.label}
-          </AppText>
+          <View style={styles.caption} importantForAccessibility="no-hide-descendants">
+            <AppText variant="subheading" align="center" numberOfLines={1} style={styles.label}>
+              {item.label}
+            </AppText>
+            {/* Share of the total, keyed to the ring by a dot in the arc colour. */}
+            <View style={styles.share}>
+              <View style={[styles.shareDot, { backgroundColor: RING_GRADIENTS[item.tone][0] }]} />
+              <AppText variant="meta" color={colors.textSecondary}>
+                {formatPercent(total > 0 ? (item.value / total) * 100 : 0)}
+              </AppText>
+            </View>
+          </View>
         </View>
       ))}
     </View>
@@ -114,5 +125,8 @@ const styles = StyleSheet.create({
   center: { alignItems: 'center', justifyContent: 'center' },
   row: { flexDirection: 'row', justifyContent: 'space-around', alignItems: 'flex-start' },
   item: { flex: 1, alignItems: 'center', gap: spacing.md },
+  caption: { alignItems: 'center' },
   label: { fontFamily: fontFamily.medium },
+  share: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs },
+  shareDot: { width: SHARE_DOT_SIZE, height: SHARE_DOT_SIZE, borderRadius: SHARE_DOT_SIZE / 2 },
 });

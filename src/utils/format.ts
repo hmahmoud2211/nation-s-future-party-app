@@ -44,22 +44,22 @@ export function formatPercent(value: number): string {
   return `${localizeDigits(Math.round(value))}${PERCENT_SIGN}`;
 }
 
+/**
+ * Egyptian mobile numbers grouped 4 · 3 · 4 ("0120 000 0010"). The groups are joined with no-break spaces,
+ * which the bidi algorithm keeps inside the number, so the groups never swap order in right-to-left text.
+ */
+export function formatPhone(phone: string): string {
+  const digits = toWesternDigits(phone).replace(/\D/g, '');
+  if (digits.length !== 11) return localizeDigits(phone);
+  return localizeDigits(`${digits.slice(0, 4)}\u00A0${digits.slice(4, 7)}\u00A0${digits.slice(7)}`);
+}
+
 /** "22/11/2026" — compact numeric date used on dashboard cards. */
 export function formatNumericDate(value?: string | Date | number): string {
   if (!value) return '—';
   const d = value instanceof Date ? value : new Date(value);
   if (Number.isNaN(d.getTime())) return '—';
   return localizeDigits(`${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`);
-}
-
-/** Header clock: { date: "16-3-2026", time: "1:47PM" } (format taken from the design). */
-export function formatClock(value: Date): { date: string; time: string } {
-  const h = value.getHours() % 12 || 12;
-  const m = value.getMinutes().toString().padStart(2, '0');
-  return {
-    date: localizeDigits(`${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`),
-    time: localizeDigits(`${h}:${m}${value.getHours() >= 12 ? 'PM' : 'AM'}`),
-  };
 }
 
 export const AR_MONTHS = [

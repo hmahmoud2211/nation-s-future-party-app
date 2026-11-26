@@ -32,61 +32,63 @@ export const latinFonts: Readonly<Record<string, string>> = {
 export const NUMERAL_STYLE: 'latin' | 'arabic' = 'latin';
 
 /**
- * Typography hierarchy (Noto Sans Arabic + Poppins). Sizes follow the Figma reference at 430pt:
+ * One knob for the size of all text in the app (1 = the 430pt Figma reference sizes written below).
+ * Line heights scale with it so Arabic marks keep their room.
+ */
+export const TYPE_SCALE = 0.9;
+/** Smallest rendered size — chart axes and count badges stay readable. */
+const MIN_FONT_SIZE = 9;
+/** Reference font size → rendered size (rounded to 0.5pt). */
+const fs = (size: number) => Math.max(MIN_FONT_SIZE, Math.round(size * TYPE_SCALE * 2) / 2);
+/** Reference line height → rendered line height (whole points). */
+const lh = (height: number) => Math.round(height * TYPE_SCALE);
+
+/**
+ * Typography hierarchy (Noto Sans Arabic + Poppins). Reference sizes (×TYPE_SCALE when rendered):
  * section headings 16 bold · card labels 15 · body 14 · secondary 12–13.
  * Arabic needs room for marks, so line heights are ~1.6×. Device text scaling is respected
  * (capped by MAX_FONT_SCALE). Never set `fontWeight` with these families (breaks Android).
  */
 export const typography = {
-  display: { fontFamily: fontFamily.bold, fontSize: 24, lineHeight: 38 },
-  screenTitle: { fontFamily: fontFamily.bold, fontSize: 19, lineHeight: 30 },
-  sectionTitle: { fontFamily: fontFamily.bold, fontSize: 16, lineHeight: 26 },
-  subheading: { fontFamily: fontFamily.semibold, fontSize: 15, lineHeight: 24 },
-  cardTitle: { fontFamily: fontFamily.semibold, fontSize: 14.5, lineHeight: 23 },
-  body: { fontFamily: fontFamily.regular, fontSize: 14, lineHeight: 23 },
+  display: { fontFamily: fontFamily.bold, fontSize: fs(24), lineHeight: lh(38) },
+  screenTitle: { fontFamily: fontFamily.bold, fontSize: fs(19), lineHeight: lh(30) },
+  sectionTitle: { fontFamily: fontFamily.bold, fontSize: fs(16), lineHeight: lh(26) },
+  subheading: { fontFamily: fontFamily.semibold, fontSize: fs(15), lineHeight: lh(24) },
+  cardTitle: { fontFamily: fontFamily.semibold, fontSize: fs(14.5), lineHeight: lh(23) },
+  body: { fontFamily: fontFamily.regular, fontSize: fs(14), lineHeight: lh(23) },
   /** Long-form reading text (announcement bodies). */
-  bodyLoose: { fontFamily: fontFamily.regular, fontSize: 14, lineHeight: 26 },
-  bodyMedium: { fontFamily: fontFamily.medium, fontSize: 14, lineHeight: 23 },
-  bodyBold: { fontFamily: fontFamily.semibold, fontSize: 14, lineHeight: 23 },
-  caption: { fontFamily: fontFamily.regular, fontSize: 13, lineHeight: 21 },
-  captionMedium: { fontFamily: fontFamily.medium, fontSize: 13, lineHeight: 21 },
-  meta: { fontFamily: fontFamily.regular, fontSize: 12, lineHeight: 19 },
+  bodyLoose: { fontFamily: fontFamily.regular, fontSize: fs(14), lineHeight: lh(26) },
+  bodyMedium: { fontFamily: fontFamily.medium, fontSize: fs(14), lineHeight: lh(23) },
+  bodyBold: { fontFamily: fontFamily.semibold, fontSize: fs(14), lineHeight: lh(23) },
+  caption: { fontFamily: fontFamily.regular, fontSize: fs(13), lineHeight: lh(21) },
+  captionMedium: { fontFamily: fontFamily.medium, fontSize: fs(13), lineHeight: lh(21) },
+  meta: { fontFamily: fontFamily.regular, fontSize: fs(12), lineHeight: lh(19) },
   /** Medium-size badge label. */
-  badgeLabel: { fontFamily: fontFamily.regular, fontSize: 12.5, lineHeight: 19 },
-  micro: { fontFamily: fontFamily.regular, fontSize: 10, lineHeight: 15 },
-  stat: { fontFamily: fontFamily.semibold, fontSize: 20, lineHeight: 30 },
+  badgeLabel: { fontFamily: fontFamily.regular, fontSize: fs(12.5), lineHeight: lh(19) },
+  micro: { fontFamily: fontFamily.regular, fontSize: fs(10), lineHeight: lh(15) },
+  stat: { fontFamily: fontFamily.semibold, fontSize: fs(20), lineHeight: lh(30) },
   /** Day number inside a calendar date block. */
-  dateDay: { fontFamily: fontFamily.bold, fontSize: 20, lineHeight: 28 },
+  dateDay: { fontFamily: fontFamily.bold, fontSize: fs(20), lineHeight: lh(28) },
   /** Total inside the slate count pill. */
-  pillValue: { fontFamily: fontFamily.medium, fontSize: 18, lineHeight: 26 },
-  button: { fontFamily: fontFamily.semibold, fontSize: 14, lineHeight: 22 },
-  label: { fontFamily: fontFamily.medium, fontSize: 13, lineHeight: 21 },
-  input: { fontFamily: fontFamily.regular, fontSize: 14.5, lineHeight: 22 },
+  pillValue: { fontFamily: fontFamily.medium, fontSize: fs(18), lineHeight: lh(26) },
+  button: { fontFamily: fontFamily.semibold, fontSize: fs(14), lineHeight: lh(22) },
+  label: { fontFamily: fontFamily.medium, fontSize: fs(13), lineHeight: lh(21) },
+  input: { fontFamily: fontFamily.regular, fontSize: fs(14.5), lineHeight: lh(22) },
   /** Compact inputs (search, composer, dialog prompt). */
-  inputCompact: { fontFamily: fontFamily.regular, fontSize: 14, lineHeight: 22 },
+  inputCompact: { fontFamily: fontFamily.regular, fontSize: fs(14), lineHeight: lh(22) },
   /** Multiline input line height. */
-  inputMultiline: { fontFamily: fontFamily.regular, fontSize: 14.5, lineHeight: 23 },
-  navLabel: { fontFamily: fontFamily.semibold, fontSize: 10.5, lineHeight: 15 },
+  inputMultiline: { fontFamily: fontFamily.regular, fontSize: fs(14.5), lineHeight: lh(23) },
+  navLabel: { fontFamily: fontFamily.semibold, fontSize: fs(10.5), lineHeight: lh(15) },
   /** Count inside a filter chip. */
-  chipCount: { fontFamily: fontFamily.regular, fontSize: 10.5, lineHeight: 17 },
+  chipCount: { fontFamily: fontFamily.regular, fontSize: fs(10.5), lineHeight: lh(17) },
   /** Notification count bubble on icon buttons. */
-  countBadge: { fontFamily: fontFamily.regular, fontSize: 10, lineHeight: 14 },
+  countBadge: { fontFamily: fontFamily.regular, fontSize: fs(10), lineHeight: lh(14) },
   /** Smaller count bubble on tab bar icons. */
-  countBadgeSmall: { fontFamily: fontFamily.regular, fontSize: 9.5, lineHeight: 12 },
+  countBadgeSmall: { fontFamily: fontFamily.regular, fontSize: fs(9.5), lineHeight: lh(12) },
   /** Chart axis labels. */
-  chartLabel: { fontFamily: fontFamily.regular, fontSize: 9.5, lineHeight: 15 },
-  /** Clock / weather text in the brand header. */
-  headerMeta: { fontFamily: fontFamily.regular, fontSize: 11, lineHeight: 16 },
-  headerMetaCompact: { fontFamily: fontFamily.regular, fontSize: 10, lineHeight: 15 },
+  chartLabel: { fontFamily: fontFamily.regular, fontSize: fs(9.5), lineHeight: lh(15) },
   /** Wide-tracked English tagline under the emblem (size scales with the emblem). */
-  tagline: { fontFamily: fontFamily.bold, lineHeight: 12, letterSpacing: 1.6 },
-  /** Dashboard highlight card (meeting cards): label, weekday, date — and compact phone variants. */
-  highlightLabel: { fontFamily: fontFamily.medium, fontSize: 15, lineHeight: 24 },
-  highlightLabelCompact: { fontFamily: fontFamily.medium, fontSize: 14, lineHeight: 22 },
-  highlightWeekday: { fontFamily: fontFamily.regular, fontSize: 14.5, lineHeight: 24 },
-  highlightWeekdayCompact: { fontFamily: fontFamily.regular, fontSize: 13.5, lineHeight: 24 },
-  highlightDate: { fontFamily: fontFamily.regular, fontSize: 16, lineHeight: 24 },
-  highlightDateCompact: { fontFamily: fontFamily.regular, fontSize: 14.5, lineHeight: 24 },
+  tagline: { fontFamily: fontFamily.bold, lineHeight: lh(12), letterSpacing: 1.6 },
 } satisfies Record<string, TextStyle>;
 
 export type TypographyVariant = keyof typeof typography;
