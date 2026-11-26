@@ -1,6 +1,8 @@
-import type { DemoAccount, Member, MembershipStatus, Role } from '@/types';
+import type { DemoAccount } from '@/features/auth/types';
+import type { Member, MembershipStatus, Role } from '@/features/members/types';
+import { identityPalette } from '@/theme';
 import { daysAgo } from '@/utils/dates';
-import { SAMPLE_GOVERNORATE_ASSIGNMENT } from './mockGovernorates';
+import { SAMPLE_GOVERNORATE_ASSIGNMENT } from '@/data/mockGovernorates';
 
 /**
  * People of أمانة قطاع الأعمال المركزية.
@@ -16,7 +18,7 @@ import { SAMPLE_GOVERNORATE_ASSIGNMENT } from './mockGovernorates';
  * kept as sample data (they send inquiries and requests and attend activities).
  */
 
-const AVATAR_COLORS = ['#0B2B68', '#3D4FB0', '#2E6B5B', '#9E3D5A', '#B5782A', '#1F5A8A', '#5B4A2E', '#4A4A6A', '#2A7F9E', '#7A5C1F', '#3E8A4A', '#6B4FBB'];
+const AVATAR_COLORS = identityPalette;
 
 let seq = 100;
 

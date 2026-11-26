@@ -1,9 +1,15 @@
 /**
  * Arabic formatting helpers. Implemented manually (no Intl dependency) so the
  * output is identical on iOS, Android and web.
+ *
+ * Digits follow the design system's `NUMERAL_STYLE` (Western digits in the current design).
  */
+import { NUMERAL_STYLE } from '@/theme';
 
 const ARABIC_DIGITS = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+const USE_ARABIC_DIGITS = (NUMERAL_STYLE as string) === 'arabic';
+const THOUSANDS_SEPARATOR = USE_ARABIC_DIGITS ? '٬' : ',';
+const PERCENT_SIGN = USE_ARABIC_DIGITS ? '٪' : '%';
 
 /** Converts Western digits (0-9) in a string to Arabic-Indic digits (٠-٩). */
 export function toArabicDigits(input: string | number): string {
@@ -15,13 +21,18 @@ export function toWesternDigits(input: string): string {
   return input.replace(/[٠-٩]/g, (d) => String(ARABIC_DIGITS.indexOf(d)));
 }
 
-/** 12500 -> "١٢٬٥٠٠" */
+/** Renders digits in the app-wide numeral style (`NUMERAL_STYLE` in the theme). */
+export function localizeDigits(input: string | number): string {
+  return USE_ARABIC_DIGITS ? toArabicDigits(input) : toWesternDigits(String(input));
+}
+
+/** 12500 -> "12,500" (or "١٢٬٥٠٠" with Arabic numerals) */
 export function formatNumber(value: number): string {
   const rounded = Math.round(value);
   const withSep = Math.abs(rounded)
     .toString()
-    .replace(/\B(?=(\d{3})+(?!\d))/g, '٬');
-  return (rounded < 0 ? '-' : '') + toArabicDigits(withSep);
+    .replace(/\B(?=(\d{3})+(?!\d))/g, THOUSANDS_SEPARATOR);
+  return (rounded < 0 ? '-' : '') + localizeDigits(withSep);
 }
 
 export function formatCurrency(value?: number): string {
@@ -30,7 +41,25 @@ export function formatCurrency(value?: number): string {
 }
 
 export function formatPercent(value: number): string {
-  return `${toArabicDigits(Math.round(value))}٪`;
+  return `${localizeDigits(Math.round(value))}${PERCENT_SIGN}`;
+}
+
+/** "22/11/2026" — compact numeric date used on dashboard cards. */
+export function formatNumericDate(value?: string | Date | number): string {
+  if (!value) return '—';
+  const d = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(d.getTime())) return '—';
+  return localizeDigits(`${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`);
+}
+
+/** Header clock: { date: "16-3-2026", time: "1:47PM" } (format taken from the design). */
+export function formatClock(value: Date): { date: string; time: string } {
+  const h = value.getHours() % 12 || 12;
+  const m = value.getMinutes().toString().padStart(2, '0');
+  return {
+    date: localizeDigits(`${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`),
+    time: localizeDigits(`${h}:${m}${value.getHours() >= 12 ? 'PM' : 'AM'}`),
+  };
 }
 
 export const AR_MONTHS = [
@@ -55,22 +84,22 @@ function toDate(value: string | Date | number): Date {
   return value instanceof Date ? value : new Date(value);
 }
 
-/** "١٦ نوفمبر ٢٠٢٦" */
+/** "16 نوفمبر 2026" */
 export function formatDate(value?: string | Date | number): string {
   if (!value) return '—';
   const d = toDate(value);
   if (Number.isNaN(d.getTime())) return '—';
-  return toArabicDigits(`${d.getDate()} ${AR_MONTHS[d.getMonth()]} ${d.getFullYear()}`);
+  return localizeDigits(`${d.getDate()} ${AR_MONTHS[d.getMonth()]} ${d.getFullYear()}`);
 }
 
-/** "١٦ نوفمبر" */
+/** "16 نوفمبر" */
 export function formatShortDate(value?: string | Date | number): string {
   if (!value) return '—';
   const d = toDate(value);
-  return toArabicDigits(`${d.getDate()} ${AR_MONTHS[d.getMonth()]}`);
+  return localizeDigits(`${d.getDate()} ${AR_MONTHS[d.getMonth()]}`);
 }
 
-/** "١٠:٣٠ ص" */
+/** "10:30 ص" */
 export function formatTime(value?: string | Date | number): string {
   if (!value) return '—';
   const d = toDate(value);
@@ -79,10 +108,10 @@ export function formatTime(value?: string | Date | number): string {
   const suffix = h >= 12 ? 'م' : 'ص';
   h = h % 12;
   if (h === 0) h = 12;
-  return toArabicDigits(`${h}:${m.toString().padStart(2, '0')} ${suffix}`);
+  return localizeDigits(`${h}:${m.toString().padStart(2, '0')} ${suffix}`);
 }
 
-/** "الاثنين ١٦ نوفمبر، ١٠:٣٠ ص" */
+/** "الاثنين 16 نوفمبر، 10:30 ص" */
 export function formatDateTime(value?: string | Date | number): string {
   if (!value) return '—';
   const d = toDate(value);
@@ -96,11 +125,11 @@ export function formatWeekday(value: string | Date | number): string {
 const pluralize = (n: number, one: string, two: string, few: string, many: string) => {
   if (n === 1) return one;
   if (n === 2) return two;
-  if (n >= 3 && n <= 10) return `${toArabicDigits(n)} ${few}`;
-  return `${toArabicDigits(n)} ${many}`;
+  if (n >= 3 && n <= 10) return `${localizeDigits(n)} ${few}`;
+  return `${localizeDigits(n)} ${many}`;
 };
 
-/** "منذ ٣ ساعات" / "بعد يومين" */
+/** "منذ 3 ساعات" / "بعد يومين" */
 export function formatRelative(value?: string | Date | number, now: Date = new Date()): string {
   if (!value) return '—';
   const d = toDate(value);
@@ -120,7 +149,7 @@ export function formatRelative(value?: string | Date | number, now: Date = new D
   return future ? `بعد ${text}` : `منذ ${text}`;
 }
 
-/** Remaining days until a date: "متبقٍ ٣ أيام" / "متأخرة بيومين" / "اليوم" */
+/** Remaining days until a date: "متبقٍ 3 أيام" / "متأخرة بيومين" / "اليوم" */
 export function formatDueIn(value: string, now: Date = new Date()): string {
   const d = toDate(value);
   const startOf = (x: Date) => new Date(x.getFullYear(), x.getMonth(), x.getDate()).getTime();
@@ -134,9 +163,9 @@ export function formatDueIn(value: string, now: Date = new Date()): string {
 
 export function formatFileSize(bytes?: number): string {
   if (!bytes && bytes !== 0) return '';
-  if (bytes < 1024) return `${toArabicDigits(bytes)} بايت`;
-  if (bytes < 1024 * 1024) return `${toArabicDigits((bytes / 1024).toFixed(0))} ك.ب`;
-  return `${toArabicDigits((bytes / (1024 * 1024)).toFixed(1))} م.ب`;
+  if (bytes < 1024) return `${localizeDigits(bytes)} بايت`;
+  if (bytes < 1024 * 1024) return `${localizeDigits((bytes / 1024).toFixed(0))} ك.ب`;
+  return `${localizeDigits((bytes / (1024 * 1024)).toFixed(1))} م.ب`;
 }
 
 /** Honorifics written before a name (e.g. "النائب" for members of parliament). */
@@ -193,11 +222,11 @@ function compoundNameParts(parts: string[]): string[] {
 
 /** Reference codes */
 export const refCode = {
-  proposal: (seq: number) => toArabicDigits(`مق-${seq}`),
-  project: (seq: number) => toArabicDigits(`مش-${seq}`),
-  feedback: (seq: number) => toArabicDigits(`ل-${seq}`),
-  request: (seq: number) => toArabicDigits(`ط-${seq}`),
-  report: (seq: number) => toArabicDigits(`ت-${seq}`),
+  proposal: (seq: number) => localizeDigits(`مق-${seq}`),
+  project: (seq: number) => localizeDigits(`مش-${seq}`),
+  feedback: (seq: number) => localizeDigits(`ل-${seq}`),
+  request: (seq: number) => localizeDigits(`ط-${seq}`),
+  report: (seq: number) => localizeDigits(`ت-${seq}`),
 };
 
 export function isSameDay(a: Date, b: Date) {

@@ -1,0 +1,1 @@
+export { ManageCommitteesScreen } from './ManageCommitteesScreen';

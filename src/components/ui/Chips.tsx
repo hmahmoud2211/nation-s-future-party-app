@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
-import { colors, radius, shadows, spacing } from '@/theme';
-import { AppText } from './AppText';
-import { PressableScale } from './PressableScale';
+import { borderRadius, colors, shadows, spacing, typography } from '@/theme';
+import { AppText } from '@/components/common/AppText';
+import { PressableScale } from '@/components/common/PressableScale';
 
 export interface ChipOption<T extends string = string> {
   key: T;
@@ -37,8 +37,8 @@ export function FilterChips<T extends string>({
               {o.label}
             </AppText>
             {o.count !== undefined ? (
-              <View style={[styles.count, { backgroundColor: active ? 'rgba(255,255,255,0.18)' : colors.navySoft }]}>
-                <AppText variant="meta" color={active ? colors.white : colors.navy2} style={styles.countText}>
+              <View style={[styles.count, { backgroundColor: active ? colors.glassStrong : colors.primarySoft }]}>
+                <AppText variant="meta" color={active ? colors.white : colors.primary} style={styles.countText}>
                   {o.count}
                 </AppText>
               </View>
@@ -74,7 +74,7 @@ export function SegmentedTabs<T extends string>({
             onPress={() => onChange(o.key)}
             style={[styles.segmentItem, active && styles.segmentActive]}
           >
-            <AppText variant="captionMedium" color={active ? colors.navy : colors.textSecondary} numberOfLines={1}>
+            <AppText variant="captionMedium" color={active ? colors.primary : colors.textSecondary} numberOfLines={1}>
               {o.label}
               {o.count !== undefined ? ` (${o.count})` : ''}
             </AppText>
@@ -90,23 +90,23 @@ const styles = StyleSheet.create({
   chip: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+    gap: spacing.xs6,
     paddingHorizontal: spacing.md,
     height: 34,
-    borderRadius: radius.pill,
+    borderRadius: borderRadius.pill,
     borderWidth: 1,
   },
-  chipActive: { backgroundColor: colors.navy, borderColor: colors.navy },
-  chipIdle: { backgroundColor: colors.white, borderColor: colors.border },
-  count: { minWidth: 20, paddingHorizontal: 5, borderRadius: 10, alignItems: 'center' },
-  countText: { fontSize: 10.5, lineHeight: 17 },
+  chipActive: { backgroundColor: colors.primary, borderColor: colors.primary },
+  chipIdle: { backgroundColor: colors.card, borderColor: colors.border },
+  count: { minWidth: 20, paddingHorizontal: spacing.xs5, borderRadius: borderRadius.pill, alignItems: 'center' },
+  countText: { ...typography.chipCount },
   segment: {
     flexDirection: 'row',
-    backgroundColor: colors.navySoft,
-    borderRadius: radius.md,
-    padding: 4,
-    gap: 4,
+    backgroundColor: colors.primarySoft,
+    borderRadius: borderRadius.md,
+    padding: spacing.xs,
+    gap: spacing.xs,
   },
-  segmentItem: { flex: 1, height: 36, borderRadius: radius.sm, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 4 },
-  segmentActive: { backgroundColor: colors.white, ...shadows.card },
+  segmentItem: { flex: 1, height: 36, borderRadius: borderRadius.sm, alignItems: 'center', justifyContent: 'center', paddingHorizontal: spacing.xs },
+  segmentActive: { backgroundColor: colors.surface, ...shadows.card },
 });

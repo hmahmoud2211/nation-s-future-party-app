@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- viewport-fit=cover lets the app read the notch / home-indicator safe areas (env(safe-area-inset-*)). -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <!-- Tints the mobile browser bar with the header navy so the page and browser chrome read as one surface. -->
+    <meta name="theme-color" content="#2C4285" />
+    <!-- Added to the home screen, the web app opens full screen like a native app. -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="مستقبل وطن" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>%WEB_TITLE%</title>
+    <!-- The `react-native-web` recommended style reset: https://necolas.github.io/react-native-web/docs/setup/#root-element -->
+    <style id="expo-reset">
+      html,
+      body {
+        height: 100%;
+        background-color: #f3f4f8;
+      }
+      body {
+        /* Screens scroll inside their own ScrollView. */
+        overflow: hidden;
+        /* No whole-page rubber-band bounce or pull-to-refresh on mobile browsers. */
+        overscroll-behavior: none;
+        /* No grey flash on tap — controls have their own press feedback. */
+        -webkit-tap-highlight-color: transparent;
+        /* Keep font sizes stable when rotating the phone. */
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      #root {
+        /* Nothing may widen the layout viewport on phones (it would shift / zoom the page). */
+        overflow: hidden;
+        width: 100%;
+        display: flex;
+        height: 100%;
+        /* Track the visible viewport as mobile browser toolbars show / hide. */
+        height: 100dvh;
+        flex: 1;
+      }
+    </style>
+  </head>
+
+  <body>
+    <noscript>يجب تفعيل JavaScript لتشغيل التطبيق.</noscript>
+    <div id="root"></div>
+  </body>
+</html>

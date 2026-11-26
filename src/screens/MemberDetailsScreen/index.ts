@@ -1,0 +1,1 @@
+export { MemberDetailsScreen } from './MemberDetailsScreen';
