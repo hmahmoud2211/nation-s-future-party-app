@@ -1,4 +1,4 @@
-import type { Governorate, GovernorateContact } from '@/types';
+import type { Governorate, GovernorateContact } from '@/features/governorates/types';
 
 /** Egypt's 27 governorates (real names), grouped by region for display. */
 export const mockGovernorates: Governorate[] = [

@@ -1,6 +1,7 @@
-import type { Proposal, ProposalStatus, TimelineEvent } from '@/types';
+import type { Proposal, ProposalStatus } from '@/features/proposals/types';
+import type { TimelineEvent } from '@/types/common.types';
 import { daysAgo } from '@/utils/dates';
-import { SECTOR_SECRETARY_ID } from './mockMembers';
+import { SECTOR_SECRETARY_ID } from '@/data/mockMembers';
 
 /** Sample committee proposals (fictional content) submitted by the people responsible for each committee. */
 type Row = {

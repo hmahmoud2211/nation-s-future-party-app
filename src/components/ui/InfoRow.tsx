@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 import type { LucideIcon } from 'lucide-react-native';
 import { colors, spacing } from '@/theme';
-import { AppText } from './AppText';
+import { AppText } from '@/components/common/AppText';
 
 /** Label / value row used on detail screens. */
 export function InfoRow({
@@ -40,12 +40,12 @@ export function InfoRow({
 }
 
 export function Divider({ style }: { style?: StyleProp<ViewStyle> }) {
-  return <View style={[{ height: 1, backgroundColor: colors.border, marginVertical: spacing.md }, style]} />;
+  return <View style={[{ height: 1, backgroundColor: colors.divider, marginVertical: spacing.md }, style]} />;
 }
 
 const styles = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: spacing.md - 2, gap: spacing.md },
-  border: { borderBottomWidth: 1, borderBottomColor: colors.border },
+  border: { borderBottomWidth: 1, borderBottomColor: colors.divider },
   labelWrap: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, flexShrink: 0, maxWidth: '45%' },
   value: { flex: 1, alignItems: 'flex-end' },
 });

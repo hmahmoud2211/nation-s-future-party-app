@@ -1,14 +1,14 @@
 import React, { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Check, ChevronDown, X } from 'lucide-react-native';
-import { colors, radius, spacing } from '@/theme';
-import { BottomSheet } from '../overlays/BottomSheet';
-import { AppText } from '../ui/AppText';
-import { Avatar } from '../ui/Avatar';
-import { Button } from '../ui/Button';
-import { PressableScale } from '../ui/PressableScale';
-import { SearchInput } from '../ui/SearchInput';
-import { EmptyState } from '../ui/States';
+import { borderRadius, colors, shadows, sizes, spacing } from '@/theme';
+import { BottomSheet } from '@/components/ui/BottomSheet';
+import { AppText } from '@/components/common/AppText';
+import { Avatar } from '@/components/common/Avatar';
+import { Button } from '@/components/common/Button';
+import { PressableScale } from '@/components/common/PressableScale';
+import { SearchInput } from '@/components/forms/SearchInput';
+import { EmptyState } from '@/components/feedback/States';
 
 export interface SelectOption {
   value: string;
@@ -28,6 +28,8 @@ interface BaseProps {
   disabled?: boolean;
   emptyText?: string;
   allowClear?: boolean;
+  /** `outline` (default form field) or `filled` — the slate selector bar from the dashboard design. */
+  variant?: 'outline' | 'filled';
 }
 
 type SingleProps = BaseProps & { multiple?: false; value?: string; onChange: (value: string | undefined) => void };
@@ -35,7 +37,8 @@ type MultiProps = BaseProps & { multiple: true; value: string[]; onChange: (valu
 
 /** Dropdown implemented as a searchable bottom sheet (single or multi select). */
 export function FormSelect(props: SingleProps | MultiProps) {
-  const { options, placeholder = 'اختر…', title, error, disabled, emptyText = 'لا توجد خيارات متاحة', allowClear } = props;
+  const { options, placeholder = 'اختر…', title, error, disabled, emptyText = 'لا توجد خيارات متاحة', allowClear, variant = 'outline' } = props;
+  const filled = variant === 'filled';
   const searchable = props.searchable ?? options.length > 6;
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
@@ -72,7 +75,7 @@ export function FormSelect(props: SingleProps | MultiProps) {
   return (
     <>
       {/* Trigger and clear button are siblings (no nested pressables / <button>s on web). */}
-      <View style={[styles.trigger, error && styles.error, disabled && styles.disabled]}>
+      <View style={[styles.trigger, filled && styles.filled, error && styles.error, disabled && styles.disabled]}>
         <PressableScale
           scaleTo={0.99}
           onPress={openSheet}
@@ -80,10 +83,10 @@ export function FormSelect(props: SingleProps | MultiProps) {
           accessibilityLabel={title ?? placeholder}
           style={styles.triggerPress}
         >
-          <AppText variant="body" color={display ? colors.text : colors.textMuted} numberOfLines={1} style={{ flex: 1 }}>
+          <AppText variant={filled ? 'bodyMedium' : 'body'} color={filled ? colors.white : display ? colors.text : colors.placeholder} numberOfLines={1} style={{ flex: 1 }}>
             {display || placeholder}
           </AppText>
-          <ChevronDown size={18} color={colors.textSecondary} />
+          <ChevronDown size={18} color={filled ? colors.accentLight : colors.textSecondary} />
         </PressableScale>
         {allowClear && display && !props.multiple ? (
           <PressableScale hitSlop={8} onPress={() => props.onChange(undefined)} accessibilityLabel="مسح الاختيار" style={styles.clear}>
@@ -153,30 +156,31 @@ const styles = StyleSheet.create({
   trigger: {
     flexDirection: 'row',
     alignItems: 'center',
-    minHeight: 50,
-    borderRadius: radius.md,
+    minHeight: sizes.input,
+    borderRadius: borderRadius.md,
     borderWidth: 1,
     borderColor: colors.border,
-    backgroundColor: colors.white,
+    backgroundColor: colors.card,
   },
+  filled: { minHeight: 44, borderRadius: borderRadius.sm, backgroundColor: colors.secondary, borderColor: colors.secondaryLight, ...shadows.tile },
   triggerPress: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: spacing.sm, minHeight: 48, paddingHorizontal: spacing.md },
   clear: { paddingHorizontal: spacing.md, minHeight: 48, justifyContent: 'center', borderStartWidth: 1, borderStartColor: colors.border },
   error: { borderColor: colors.error },
-  disabled: { backgroundColor: colors.navyTint },
+  disabled: { backgroundColor: colors.tint },
   option: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.md,
     padding: spacing.md,
-    borderRadius: radius.md,
+    borderRadius: borderRadius.md,
     backgroundColor: colors.white,
     borderWidth: 1,
     borderColor: colors.border,
   },
-  optionSelected: { borderColor: colors.navy2, backgroundColor: colors.navyTint },
-  check: { width: 22, height: 22, borderRadius: 11, borderWidth: 1.5, borderColor: colors.borderStrong, alignItems: 'center', justifyContent: 'center' },
-  checkSquare: { borderRadius: 6 },
-  checkOn: { backgroundColor: colors.navy2, borderColor: colors.navy2 },
+  optionSelected: { borderColor: colors.primary, backgroundColor: colors.tint },
+  check: { width: 22, height: 22, borderRadius: borderRadius.pill, borderWidth: 1.5, borderColor: colors.borderStrong, alignItems: 'center', justifyContent: 'center' },
+  checkSquare: { borderRadius: borderRadius.xs },
+  checkOn: { backgroundColor: colors.primary, borderColor: colors.primary },
 });
 
 export default FormSelect;

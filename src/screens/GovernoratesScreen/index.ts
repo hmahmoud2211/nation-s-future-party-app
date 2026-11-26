@@ -1,0 +1,1 @@
+export { GovernoratesScreen } from './GovernoratesScreen';

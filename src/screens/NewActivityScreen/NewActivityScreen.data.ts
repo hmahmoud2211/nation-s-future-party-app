@@ -1,0 +1,42 @@
+/** New-activity form copy. */
+export const newActivityCopy = {
+  titleRequired: 'يرجى إدخال اسم النشاط',
+  titleTooShort: 'اسم النشاط قصير جداً',
+  typeRequired: 'يرجى اختيار نوع النشاط',
+  committeeRequired: 'يرجى اختيار اللجنة',
+  dateRequired: 'يرجى تحديد موعد النشاط',
+  locationRequired: 'يرجى إدخال مكان النشاط',
+  capacityInvalid: 'يرجى إدخال رقم صحيح',
+  capacityPositive: 'العدد يجب أن يكون أكبر من صفر',
+
+  createdToast: 'تم إنشاء النشاط ونشره لأعضاء اللجنة بنجاح',
+  incompleteToast: 'يرجى استكمال البيانات المطلوبة',
+
+  noAccessTitle: 'نشاط جديد',
+  noAccessMessage: 'إنشاء الأنشطة متاح لمسؤولي اللجان ومدير النظام فقط.',
+
+  title: 'إنشاء نشاط جديد',
+  subtitle: 'ورشة، ندوة، زيارة ميدانية أو مبادرة',
+  submit: 'إنشاء النشاط',
+  cancel: 'إلغاء',
+
+  nameLabel: 'اسم النشاط',
+  namePlaceholder: 'مثال: ورشة التسويق الرقمي',
+  typeLabel: 'نوع النشاط',
+  committeeLabel: 'اللجنة',
+  committeeSheetTitle: 'اختر اللجنة',
+  dateLabel: 'الموعد',
+  dateSheetTitle: 'موعد النشاط',
+  datePlaceholder: 'اختر التاريخ والوقت',
+  locationLabel: 'المكان',
+  locationPlaceholder: 'مقر الأمانة المركزية — القاعة الكبرى',
+  capacityLabel: 'العدد المتاح للتسجيل',
+  capacityHint: 'اتركه فارغاً إذا كان العدد مفتوحاً',
+  capacityPlaceholder: 'مثال: 60',
+  capacitySuffix: 'مشارك',
+  descriptionLabel: 'وصف النشاط',
+  descriptionPlaceholder: 'أهداف النشاط والفئة المستهدفة والبرنامج…',
+  imagesLabel: 'صور توضيحية',
+  imagesHint: 'اختياري — الصور تبقى على جهازك ولا تُرفع لأي خادم',
+  attachImage: 'إرفاق صورة',
+} as const;

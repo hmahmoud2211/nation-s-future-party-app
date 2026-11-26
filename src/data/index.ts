@@ -1,15 +1,15 @@
-import type { DataState } from '@/store/types';
-import { mockActivities } from './mockActivities';
-import { mockCommittees } from './mockCommittees';
-import { mockFeedback } from './mockFeedback';
-import { mockGovernorateContacts, mockGovernorates } from './mockGovernorates';
-import { mockMeetings } from './mockMeetings';
-import { DEMO_ACCOUNT_GROUP_LABELS, demoAccounts, mockMembers } from './mockMembers';
-import { mockAnnouncements, mockNotifications, mockReports, mockRequests } from './mockMisc';
-import { mockProjects } from './mockProjects';
-import { mockProposals } from './mockProposals';
+import type { DataState } from '@/types/store.types';
+import { mockActivities } from '@/data/mockActivities';
+import { mockCommittees } from '@/data/mockCommittees';
+import { mockFeedback } from '@/data/mockFeedback';
+import { mockGovernorateContacts, mockGovernorates } from '@/data/mockGovernorates';
+import { mockMeetings } from '@/data/mockMeetings';
+import { DEMO_ACCOUNT_GROUP_LABELS, demoAccounts, mockMembers } from '@/data/mockMembers';
+import { mockAnnouncements, mockNotifications, mockReports, mockRequests, sampleWeather } from '@/data/mockMisc';
+import { mockProjects } from '@/data/mockProjects';
+import { mockProposals } from '@/data/mockProposals';
 
-export { DEMO_ACCOUNT_GROUP_LABELS, demoAccounts };
+export { DEMO_ACCOUNT_GROUP_LABELS, demoAccounts, sampleWeather };
 
 const clone = <T,>(value: T): T => JSON.parse(JSON.stringify(value)) as T;
 

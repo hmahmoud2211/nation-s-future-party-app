@@ -43,15 +43,18 @@ Five tabs for everyone (الرئيسية • اللجان • المقترحات
 
 ## 3. Home dashboards
 
-A compact header (greeting, role badge such as "الأمين المساعد • مسؤول اللجنة", notifications, account switch) above a dashboard chosen by role:
+One continuous, scrollable page built from the Figma design, under a fixed brand header (emblem, live date/time, sample weather, notifications). Every figure is live and limited to what the user may see:
 
-| Dashboard | Shows |
+| Section | Shows |
 |---|---|
-| الأمين / admin | 4 KPIs (committees, active projects, proposals awaiting decision, upcoming meetings); financial summary; proposals awaiting decision; upcoming meetings; recent committee activities; quick actions |
-| الأمين المساعد | Assigned governorates (with counts); their committees; proposals in their committees or governorates; upcoming meetings; activities in their governorates |
-| عضو الهيئة | Quick actions; their committees; recent activities; latest proposals; upcoming meetings |
-| مسؤول اللجنة | Committee card with stats; prominent **تقديم مقترح جديد** button; committee proposals; committee activities; upcoming meetings |
-| عضو | Their committee; upcoming meetings; committee activities and proposals |
+| أداء الحزب | Previous and next meeting (weekday + date); tap opens the meeting |
+| عدد المبادرات | Total initiatives (proposals) plus rings for جاري التنفيذ / تم التنفيذ / قيد الدراسة |
+| عدد المبادرات التي تم تنفيذها | Implemented initiatives per month (last 6 months) |
+| Quick actions | تقديم مقترح and اجتماع جديد (only when permitted), الفعاليات |
+| المحافظات | Governorate picker, governorate secretary and contact number, initiative rings, implementation rating — shown to roles that can view governorates |
+| أهم الأخبار | Latest 3 announcements the user can see, plus a link to all |
+
+The demo account switch is in «المزيد».
 
 ## 4. Proposals (المقترحات)
 
@@ -140,15 +143,16 @@ A compact header (greeting, role badge such as "الأمين المساعد • 
 
 ## 10. Design
 
-- Arabic-first and fully RTL, Cairo font.
-- **Type scale:** screen titles 20, sections 16, card titles 14.5, body 14, secondary 12–13. Semibold instead of heavy bold; device text scaling respected (capped).
-- **Layout:** compact headers and cards, subtle borders and shadows, no decorative rings, restrained colors. Clear empty, loading and "not authorized" states.
+- Arabic-first and fully RTL. Arabic in Noto Sans Arabic, numbers and Latin text in Poppins (both matched to the design). Numbers use Western digits, as in the design (switch with `NUMERAL_STYLE` in `src/theme`).
+- **Design system** (`src/theme/index.ts`, derived from the Home Figma design): deep navy (`#0F1963`) for headings and card outlines, slate indigo for tiles, pills and the dropdown, blue / teal / violet gradients for data, and a white → lavender page background with a cyan glow.
+- **Type scale:** screen titles 19, sections 16 bold, card labels 15, card titles 14.5, body 14, secondary 12–13. Device text scaling respected (capped).
+- **Components:** rounded navy headers, navy-outlined translucent cards (22pt radius), navy gradient action tiles, and a floating pill tab bar. Clear empty, loading and "not authorized" states.
 
 ## 11. Removed
 
 - Incentives and rewards, entirely: screens, approvals tab, statuses, notifications, mock data, labels and components.
 - Tasks: screens, tabs, mock data, links from meetings and projects.
-- The separate لجنتي and التقارير tabs. Their content now lives on the home dashboards, the committee page and المزيد.
+- The separate لجنتي and التقارير tabs. Their content now lives on the committee page, the tabs and المزيد.
 
 ## 12. Known limitations
 

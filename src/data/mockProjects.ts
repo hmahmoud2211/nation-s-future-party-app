@@ -1,4 +1,5 @@
-import type { Comment, Expense, Milestone, Project, ProjectStatus } from '@/types';
+import type { Expense, Milestone, Project, ProjectStatus } from '@/features/projects/types';
+import type { Comment } from '@/types/common.types';
 import { daysAgo, daysFromNow } from '@/utils/dates';
 
 type Row = {

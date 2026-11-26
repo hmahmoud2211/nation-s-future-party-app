@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, Switch, View } from 'react-native';
 import type { LucideIcon } from 'lucide-react-native';
-import { colors, radius, spacing } from '@/theme';
-import { AppText } from '../ui/AppText';
-import { PressableScale } from '../ui/PressableScale';
+import { borderRadius, colors, spacing } from '@/theme';
+import { AppText } from '@/components/common/AppText';
+import { PressableScale } from '@/components/common/PressableScale';
 
 export interface Choice<T extends string> {
   value: T;
@@ -43,7 +43,7 @@ export function ChoiceChips<T extends string>({
               error && !value && { borderColor: colors.error },
             ]}
           >
-            {Icon ? <Icon size={16} color={active ? colors.gold : colors.navy2} /> : null}
+            {Icon ? <Icon size={16} color={active ? colors.accent : colors.primary} /> : null}
             <AppText variant="captionMedium" color={active ? colors.white : colors.text} numberOfLines={1} style={{ flexShrink: 1 }}>
               {o.label}
             </AppText>
@@ -86,7 +86,7 @@ export function MultiChoiceChips<T extends string>({
               error && value.length === 0 && { borderColor: colors.error },
             ]}
           >
-            {Icon ? <Icon size={16} color={active ? colors.gold : colors.navy2} /> : null}
+            {Icon ? <Icon size={16} color={active ? colors.accent : colors.primary} /> : null}
             <AppText variant="captionMedium" color={active ? colors.white : colors.text} numberOfLines={1} style={{ flexShrink: 1 }}>
               {o.label}
             </AppText>
@@ -111,7 +111,7 @@ export function SwitchRow({ label, description, value, onChange }: { label: stri
       <Switch
         value={value}
         onValueChange={onChange}
-        trackColor={{ true: colors.gold, false: colors.borderStrong }}
+        trackColor={{ true: colors.accent, false: colors.borderStrong }}
         thumbColor={colors.white}
         {...({ activeThumbColor: colors.white } as object)}
         accessibilityLabel={label}
@@ -128,11 +128,11 @@ const styles = StyleSheet.create({
     gap: spacing.xs + 2,
     paddingHorizontal: spacing.md,
     minHeight: 42,
-    borderRadius: radius.md,
+    borderRadius: borderRadius.md,
     borderWidth: 1,
     borderColor: colors.border,
     backgroundColor: colors.white,
   },
-  active: { backgroundColor: colors.navy, borderColor: colors.navy },
+  active: { backgroundColor: colors.primary, borderColor: colors.primary },
   switchRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, paddingVertical: spacing.sm },
 });

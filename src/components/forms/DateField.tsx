@@ -1,12 +1,12 @@
 import React, { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { CalendarDays, ChevronLeft, ChevronRight, Clock } from 'lucide-react-native';
-import { colors, radius, spacing } from '@/theme';
-import { AR_MONTHS, formatDate, formatDateTime, isSameDay, toArabicDigits } from '@/utils/format';
-import { BottomSheet } from '../overlays/BottomSheet';
-import { AppText } from '../ui/AppText';
-import { Button } from '../ui/Button';
-import { PressableScale } from '../ui/PressableScale';
+import { borderRadius, colors, spacing } from '@/theme';
+import { AR_MONTHS, formatDate, formatDateTime, isSameDay, localizeDigits } from '@/utils/format';
+import { BottomSheet } from '@/components/ui/BottomSheet';
+import { AppText } from '@/components/common/AppText';
+import { Button } from '@/components/common/Button';
+import { PressableScale } from '@/components/common/PressableScale';
 
 // Week starts on Saturday (common in Egypt).
 const WEEK = ['سبت', 'أحد', 'اثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة'];
@@ -34,7 +34,7 @@ function buildMonth(year: number, month: number) {
   return cells;
 }
 
-const hourLabel = (h: number) => toArabicDigits(`${h % 12 === 0 ? 12 : h % 12} ${h >= 12 ? 'م' : 'ص'}`);
+const hourLabel = (h: number) => localizeDigits(`${h % 12 === 0 ? 12 : h % 12} ${h >= 12 ? 'م' : 'ص'}`);
 
 /** Arabic calendar picker (custom, identical on iOS / Android / web). */
 export function DateField({ value, onChange, placeholder = 'اختر التاريخ', withTime, minDate, error, title, allowClear }: DateFieldProps) {
@@ -96,11 +96,11 @@ export function DateField({ value, onChange, placeholder = 'اختر التار�
         <View style={styles.monthRow}>
           {/* RTL: previous month on the start (right) side */}
           <PressableScale onPress={() => shift(-1)} style={styles.nav} accessibilityLabel="الشهر السابق">
-            <ChevronRight size={20} color={colors.navy2} />
+            <ChevronRight size={20} color={colors.primary} />
           </PressableScale>
-          <AppText variant="sectionTitle">{toArabicDigits(`${AR_MONTHS[cursor.m]} ${cursor.y}`)}</AppText>
+          <AppText variant="sectionTitle">{localizeDigits(`${AR_MONTHS[cursor.m]} ${cursor.y}`)}</AppText>
           <PressableScale onPress={() => shift(1)} style={styles.nav} accessibilityLabel="الشهر التالي">
-            <ChevronLeft size={20} color={colors.navy2} />
+            <ChevronLeft size={20} color={colors.primary} />
           </PressableScale>
         </View>
         <View style={styles.grid}>
@@ -136,7 +136,7 @@ export function DateField({ value, onChange, placeholder = 'اختر التار�
         {withTime ? (
           <View style={{ marginTop: spacing.lg }}>
             <View style={styles.timeTitle}>
-              <Clock size={16} color={colors.goldDark} />
+              <Clock size={16} color={colors.accentStrong} />
               <AppText variant="label">الوقت</AppText>
             </View>
             <View style={styles.chips}>
@@ -152,7 +152,7 @@ export function DateField({ value, onChange, placeholder = 'اختر التار�
               {MINUTES.map((m) => (
                 <PressableScale key={m} onPress={() => setMinute(m)} style={[styles.chip, minute === m && styles.chipOn]}>
                   <AppText variant="captionMedium" color={minute === m ? colors.white : colors.text}>
-                    {toArabicDigits(`:${m.toString().padStart(2, '0')}`)}
+                    {localizeDigits(`:${m.toString().padStart(2, '0')}`)}
                   </AppText>
                 </PressableScale>
               ))}
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     minHeight: 50,
-    borderRadius: radius.md,
+    borderRadius: borderRadius.md,
     borderWidth: 1,
     borderColor: colors.border,
     backgroundColor: colors.white,
@@ -177,16 +177,16 @@ const styles = StyleSheet.create({
   triggerPress: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: spacing.sm, minHeight: 48, paddingHorizontal: spacing.md },
   clear: { paddingHorizontal: spacing.md, minHeight: 48, justifyContent: 'center', borderStartWidth: 1, borderStartColor: colors.border },
   monthRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: spacing.md },
-  nav: { width: 38, height: 38, borderRadius: radius.md, backgroundColor: colors.navySoft, alignItems: 'center', justifyContent: 'center' },
-  grid: { flexDirection: 'row', flexWrap: 'wrap', backgroundColor: colors.white, borderRadius: radius.lg, padding: spacing.sm, borderWidth: 1, borderColor: colors.border },
-  cell: { width: `${100 / 7}%`, aspectRatio: 1, alignItems: 'center', justifyContent: 'center', padding: 2 },
-  day: { width: '100%', height: '100%', borderRadius: radius.sm, alignItems: 'center', justifyContent: 'center' },
-  today: { borderWidth: 1.5, borderColor: colors.gold },
-  selected: { backgroundColor: colors.navy, borderColor: colors.navy },
+  nav: { width: 38, height: 38, borderRadius: borderRadius.md, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center' },
+  grid: { flexDirection: 'row', flexWrap: 'wrap', backgroundColor: colors.white, borderRadius: borderRadius.lg, padding: spacing.sm, borderWidth: 1, borderColor: colors.border },
+  cell: { width: `${100 / 7}%`, aspectRatio: 1, alignItems: 'center', justifyContent: 'center', padding: spacing.xxs },
+  day: { width: '100%', height: '100%', borderRadius: borderRadius.sm, alignItems: 'center', justifyContent: 'center' },
+  today: { borderWidth: 1.5, borderColor: colors.accent },
+  selected: { backgroundColor: colors.primary, borderColor: colors.primary },
   timeTitle: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs, marginBottom: spacing.sm },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs + 2 },
-  chip: { paddingHorizontal: spacing.md, height: 34, borderRadius: radius.pill, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.white, alignItems: 'center', justifyContent: 'center' },
-  chipOn: { backgroundColor: colors.navy, borderColor: colors.navy },
+  chip: { paddingHorizontal: spacing.md, height: 34, borderRadius: borderRadius.pill, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.white, alignItems: 'center', justifyContent: 'center' },
+  chipOn: { backgroundColor: colors.primary, borderColor: colors.primary },
 });
 
 export default DateField;

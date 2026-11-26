@@ -1,4 +1,4 @@
-import type { Feedback, FeedbackCategory, FeedbackStatus, FeedbackTopic } from '@/types';
+import type { Feedback, FeedbackCategory, FeedbackStatus, FeedbackTopic } from '@/features/feedback/types';
 import { daysAgo, hoursAgo } from '@/utils/dates';
 
 type Msg = [string, string, number]; // author, message, hoursAgo

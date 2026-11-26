@@ -1,0 +1,1 @@
+export { NewProposalScreen } from './NewProposalScreen';

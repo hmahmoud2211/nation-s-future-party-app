@@ -1,0 +1,1 @@
+export { AnnouncementDetailsScreen } from './AnnouncementDetailsScreen';

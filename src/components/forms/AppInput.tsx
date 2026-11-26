@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Platform, StyleSheet, TextInput, View, type StyleProp, type TextInputProps, type ViewStyle } from 'react-native';
 import type { LucideIcon } from 'lucide-react-native';
-import { colors, fonts, MAX_FONT_SCALE, radius, spacing } from '@/theme';
-import { AppText } from '../ui/AppText';
+import { borderRadius, colors, MAX_FONT_SCALE, shadows, sizes, spacing, typography } from '@/theme';
+import { AppText } from '@/components/common/AppText';
 
 export interface AppInputProps extends TextInputProps {
   icon?: LucideIcon;
@@ -27,9 +27,9 @@ export function AppInput({ icon: Icon, suffix, error, containerStyle, style, onF
         containerStyle,
       ]}
     >
-      {Icon ? <Icon size={18} color={focused ? colors.navy2 : colors.textMuted} style={multiline ? { marginTop: 12 } : undefined} /> : null}
+      {Icon ? <Icon size={18} color={focused ? colors.primary : colors.textMuted} style={multiline ? { marginTop: spacing.md } : undefined} /> : null}
       <TextInput
-        placeholderTextColor={colors.textMuted}
+        placeholderTextColor={colors.placeholder}
         maxFontSizeMultiplier={MAX_FONT_SCALE}
         multiline={multiline}
         textAlignVertical={multiline ? 'top' : 'center'}
@@ -63,28 +63,29 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
-    minHeight: 50,
+    minHeight: sizes.input,
     paddingHorizontal: spacing.md,
-    borderRadius: radius.md,
+    borderRadius: borderRadius.md,
     borderWidth: 1,
     borderColor: colors.border,
-    backgroundColor: colors.white,
+    // Opaque so typed text stays crisp over the gradient page background.
+    backgroundColor: colors.surface,
   },
   multiline: { alignItems: 'flex-start', minHeight: 112 },
-  focused: { borderColor: colors.navy2, boxShadow: '0px 0px 0px 3px rgba(11,43,104,0.08)' },
+  focused: { borderColor: colors.primary, ...shadows.focus },
   error: { borderColor: colors.error },
-  disabled: { backgroundColor: colors.navyTint },
+  disabled: { backgroundColor: colors.tint },
   input: {
     flex: 1,
-    fontFamily: fonts.regular,
-    fontSize: 14.5,
+    fontFamily: typography.input.fontFamily,
+    fontSize: typography.input.fontSize,
     color: colors.text,
     textAlign: 'right',
     writingDirection: 'rtl',
     paddingVertical: Platform.OS === 'web' ? 12 : 10,
     ...(Platform.OS === 'web' ? ({ outlineStyle: 'none' } as object) : null),
   },
-  inputMultiline: { minHeight: 100, paddingTop: 12, lineHeight: 23 },
+  inputMultiline: { minHeight: 100, paddingTop: spacing.md, lineHeight: typography.inputMultiline.lineHeight },
 });
 
 export default AppInput;

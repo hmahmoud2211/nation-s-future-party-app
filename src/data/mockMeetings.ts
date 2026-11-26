@@ -1,5 +1,5 @@
-import type { Meeting, MeetingMode, MeetingStatus, RSVPStatus } from '@/types';
-import { LEAD_OFFICIAL, mockMembers, SECTOR_SECRETARY_ID } from './mockMembers';
+import type { Meeting, MeetingMode, MeetingStatus, RSVPStatus } from '@/features/meetings/types';
+import { LEAD_OFFICIAL, mockMembers, SECTOR_SECRETARY_ID } from '@/data/mockMembers';
 import { daysFromNow } from '@/utils/dates';
 
 const OFFICIAL = LEAD_OFFICIAL;
@@ -16,7 +16,7 @@ const rows: Row[] = [
   ['c-investment', 'ورشة صياغة دليل الإجراءات', -9, 17, 'in_person', 'مقر الأمانة المركزية', ['توزيع فصول الدليل', 'معايير الصياغة المبسطة'], 'completed', 'تم توزيع فصول الدليل على الأعضاء، والاتفاق على معايير موحدة للصياغة المبسطة.'],
   ['c-investment', 'اجتماع تنسيقي مع غرف التجارة', 14, 12, 'online', 'اجتماع مرئي', ['آليات التعاون', 'الفرص المقترحة للملتقى'], 'scheduled'],
   ['c-industry', 'اجتماع لجنة الصناعة الشهري', 4, 17, 'in_person', 'مقر الأمانة المركزية — قاعة (ج)', ['نتائج الزيارات الميدانية', 'خطة ورقة التوصيات'], 'scheduled', undefined],
-  ['c-industry', 'لقاء تشاوري مع المصنعين', -6, 13, 'in_person', 'إحدى المناطق الصناعية (موقع تجريبي)', ['التحديات التشغيلية', 'مقترحات الحلول'], 'completed', 'رصد ١٢ تحدياً رئيسياً، أبرزها إجراءات التراخيص وتكلفة الطاقة، وتكليف الأعضاء بصياغة التوصيات.'],
+  ['c-industry', 'لقاء تشاوري مع المصنعين', -6, 13, 'in_person', 'إحدى المناطق الصناعية (موقع تجريبي)', ['التحديات التشغيلية', 'مقترحات الحلول'], 'completed', 'رصد 12 تحدياً رئيسياً، أبرزها إجراءات التراخيص وتكلفة الطاقة، وتكليف الأعضاء بصياغة التوصيات.'],
   ['c-realestate', 'اجتماع لجنة التطوير العقاري', 6, 18, 'in_person', 'مقر الأمانة المركزية', ['نتائج الدراسة المقارنة', 'تنسيق جلسات الاستماع'], 'scheduled'],
   ['c-entre', 'اجتماع لجنة التحكيم', 10, 17, 'online', 'اجتماع مرئي', ['معايير التحكيم', 'توزيع الطلبات على المحكمين'], 'scheduled', undefined],
   ['c-entre', 'اجتماع إطلاق المسابقة', -30, 18, 'in_person', 'مقر الأمانة المركزية', ['خطة الإطلاق', 'قنوات الترويج'], 'completed', 'تم إطلاق المسابقة رسمياً، والاتفاق على متابعة الطلبات أسبوعياً.'],

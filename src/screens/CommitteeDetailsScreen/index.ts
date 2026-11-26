@@ -1,0 +1,1 @@
+export { CommitteeDetailsScreen } from './CommitteeDetailsScreen';

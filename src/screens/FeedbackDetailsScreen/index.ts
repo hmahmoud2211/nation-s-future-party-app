@@ -1,0 +1,1 @@
+export { FeedbackDetailsScreen } from './FeedbackDetailsScreen';
